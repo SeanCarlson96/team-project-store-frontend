@@ -1,1 +1,37 @@
-<p>signup works!</p>
+<mat-card class="card">
+    <mat-card-header>
+      <h2>Sign Up</h2>
+    </mat-card-header>
+
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input
+      matInput
+      type="text"
+      placeholder="My Email"
+      #suEmail
+    />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input
+      matInput
+      type="password"
+      placeholder="My Password"
+      #suPassword
+    />
+  </mat-form-field>
+
+  <mat-radio-group aria-label="Select an option">
+    <mat-radio-button value="2" #userType>Customer</mat-radio-button>
+    <mat-radio-button value="1" #userType>Shopkeeper</mat-radio-button>
+    <mat-radio-button value="1" #userType>Admin</mat-radio-button>
+  </mat-radio-group>
+
+  <button 
+    mat-flat-button 
+    color="basic" 
+    (click)="onSignUp(suEmail.value, suPassword.value, userType.value)"
+    >Sign Up</button>
+</mat-card>
