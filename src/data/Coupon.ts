@@ -1,4 +1,4 @@
-import { AppUser } from "./user"
+import { AppUser } from "./User"
 
 export interface Coupon {
     id: number
