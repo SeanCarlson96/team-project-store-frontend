@@ -1,13 +1,23 @@
 <mat-toolbar color="primary">
-    <!-- <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-      <mat-icon>menu</mat-icon>
-    </button> -->
+    <button mat-icon-button (click)="setHomepage()">
+      <mat-icon>home</mat-icon>
+    </button>
     <span>SAFO: Shop around and Find Out</span>
     <span class="example-spacer"></span>
-    <button mat-icon-button (click)="getLogin()">
-      Login
+    <!-- toggles btn text based on user logged in -->
+    <button mat-icon-button (click)="setLoggedIn()">
+        {{getLoggedIn() === true ? 'Logout' : 'Login'}}
     </button>
-    <button mat-icon-button (click)="getSignup()">
-      Sign-up
+    <button mat-icon-button (click)="setSignup()">
+      {{getLoggedIn() === true ? 'Profile' : 'Signup'}}
     </button>
-  </mat-toolbar>
+</mat-toolbar>
+<div *ngIf="getLoggedIn()">
+  <h1>Logged In</h1>
+</div>
+<div *ngIf="getSignedUp()">
+    <h1>Sign Up</h1>
+</div>
+<div *ngIf="getHomepage()">
+    <h1>Homepage</h1>
+</div>
