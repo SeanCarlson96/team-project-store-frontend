@@ -1,8 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-interface Food {
-  value: string;
-  viewValue: string;
-}
 
 @Component({
   selector: 'app-homepage',
