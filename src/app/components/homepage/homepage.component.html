@@ -1,1 +1,14 @@
+<div class="category-container">
+    <h4>Category</h4>
+    <mat-form-field appearance="fill">
+    <mat-label>Select Category</mat-label>
+    <mat-select>
+        <mat-option *ngFor="let category of categories" [value]="category">
+        {{category}}
+        </mat-option>
+    </mat-select>
+    </mat-form-field>
+
+</div>
+
 <app-product></app-product>
