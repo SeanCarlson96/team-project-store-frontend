@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { AppUser } from 'src/data/User';
 import { take } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PageName } from '../enums/PageEnum';
 
 @Injectable({
   providedIn: 'root'
@@ -10,18 +11,19 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class UiService {
   private showHomePage = true
   private showProductPage = false
-
-
-  constructor() { }
-
-  public showThisProduct(): void {
-    this.showHomePage = false
-    this.showProductPage = true
   private http: HttpClient
-  public currentUser = {} as AppUser;
+  public currentUser = {} as AppUser
+  public pageName: number = PageName.HOME
 
   constructor(http: HttpClient, private _snackBar: MatSnackBar) {
     this.http = http
+  }
+  public changePage(page: number): void {
+    this.pageName = page
+  }
+  public showThisProduct(): void {
+    this.showHomePage = false
+    this.showProductPage = true
   }
   openSnackBar(message: string, action: string){
     this._snackBar.open(message, action);

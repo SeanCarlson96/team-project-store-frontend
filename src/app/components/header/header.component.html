@@ -5,7 +5,7 @@
     <span>SAFO: Shop around and Find Out</span>
     <span class="example-spacer"></span>
     <!-- toggles btn text based on user logged in -->
-    <button mat-icon-button (click)="setLoggedIn()">
+    <button mat-icon-button (click)="ui.changePage(PageName.LOGIN)">
         {{getLoggedIn() === true ? 'Logout' : 'Login'}}
     </button>
     <button mat-icon-button (click)="setSignup()">
