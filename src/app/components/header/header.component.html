@@ -8,7 +8,7 @@
     <button mat-icon-button (click)="ui.changePage(PageName.LOGIN)">
         {{getLoggedIn() === true ? 'Logout' : 'Login'}}
     </button>
-    <button mat-icon-button (click)="setSignup()">
+    <button mat-icon-button (click)="ui.changePage(PageName.SIGNUP)">
       {{getLoggedIn() === true ? 'Profile' : 'Signup'}}
     </button>
 </mat-toolbar>
