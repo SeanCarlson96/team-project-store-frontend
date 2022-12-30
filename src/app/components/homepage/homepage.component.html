@@ -11,4 +11,4 @@
 
 </div>
 
-<app-product></app-product>
+<app-product *ngFor="let product of ui.products" [product]="product"></app-product>

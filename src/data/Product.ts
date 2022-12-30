@@ -5,12 +5,12 @@ export interface Product {
     id: number
     productName: string
     price: number
-    sale: Sale
+    sale: Sale | null
     categories: Category[]
     description: string
     discontinued: boolean
     image: string
-    availableDate: Date
+    availableDate: Date | null
     quantity: number
     minAdPrice: number
 }
