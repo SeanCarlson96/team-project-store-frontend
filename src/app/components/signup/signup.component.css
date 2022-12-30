@@ -1,0 +1,18 @@
+.card {
+    width: 400px;
+    margin: auto;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+.card button {
+    margin: 3px;
+
+}
+.radio-group {
+    display: flex;
+    justify-content: space-between;
+    margin: 3px;
+    margin-bottom: 3px;
+}

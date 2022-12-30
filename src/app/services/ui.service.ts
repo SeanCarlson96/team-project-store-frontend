@@ -14,11 +14,14 @@ export class UiService {
   private http: HttpClient
   public currentUser = {} as AppUser
   public pageName: number = PageName.HOME
+  private newUser = {} as AppUser
 
   constructor(http: HttpClient, private _snackBar: MatSnackBar) {
+    //this.pageName = localStorage.getItem("page")? +!localStorage.getItem("page") : PageName.HOME;
     this.http = http
   }
   public changePage(page: number): void {
+    //localStorage.setItem("page", page.toString());
     this.pageName = page
   }
   public showThisProduct(): void {
@@ -29,7 +32,6 @@ export class UiService {
     this._snackBar.open(message, action);
   }
   getAppUser(liUsername: string, liPassword: string): void {
-    console.log(liPassword + " " + liUsername)
     this.http
       .get<AppUser>(`http://localhost:8080/appusers?username=${liUsername}&password=${liPassword}`)
       .pipe(take(1))
@@ -40,7 +42,22 @@ export class UiService {
       error: () => this.openSnackBar('Invalid Credentials', 'Close'),
     })
   }
-  addAppUser(suEmail: string, suPassword: string, userType: string) {
-    throw new Error('Method not implemented.');
+  addAppUser(suEmail: string, suPassword: string, userType: string): void {
+    this.newUser = {
+      id: 0,
+      email: suEmail,
+      password: suPassword,
+      userType: userType,
+      carts: [],
+      coupons: []
+    }
+    this.http
+      .post<AppUser>('http://localhost:8080/appusers', this.newUser)
+      .pipe(take(1))
+      .subscribe({
+        next: () => this.openSnackBar('Registered Successfully', 'Close'),
+        error: () => this.openSnackBar('Invalid Credentials', 'Close'),
+    })
+
   }
 }
