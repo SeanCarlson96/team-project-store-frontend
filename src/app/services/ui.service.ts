@@ -35,6 +35,10 @@ export class UiService {
     // storing email and password so refresh won't return to home
     const email = localStorage.getItem('email');
     const password = localStorage.getItem('password');
+    if(email !== null && password !== null){
+      this.getAppUser(email, password)
+    }
+
   }
   public changePage(page: number): void {
     //localStorage.setItem("page", page.toString());
@@ -49,6 +53,10 @@ export class UiService {
   public validLogin(appUser: AppUser): void {
     localStorage.setItem('email', appUser.email);
     localStorage.setItem('password', appUser.password);
+  }
+
+  public loggedIn(): boolean {
+    return true;
   }
 
   // to clear user from local storage

@@ -1,23 +1,26 @@
 <mat-toolbar  color="primary">
-  
-    <button mat-icon-button (click)="ui.changePage(PageName.HOME)">
+  <button mat-icon-button 
+  (click)="ui.currentUser ? ui.changePage(PageName.CUSTOMERPAGE) : ui.changePage(PageName.HOME)">
       <mat-icon>home</mat-icon>
     </button>
-
-    <span>SAFO: Shop Around, Find Out</span>
-    <span class="header-spacer"></span>    
-    <div *ngIf="!ui.currentUser.email; else userLoggedIn">
+    <span>SAFO: Shop Around, Find Out</span>  
+    <span class="header-spacer"></span>
+    <div *ngIf="!ui.currentUser.email; else userLoggedIn">    
     <button mat-icon-button (click)="ui.changePage(PageName.LOGIN)">
         Login
     </button>
     <button mat-icon-button (click)="ui.changePage(PageName.SIGNUP)">
       Sign Up
     </button>
-    </div>
+  </div>
 
-    <ng-template #userLoggedIn>      
+    <ng-template #userLoggedIn>
+      <span class="loggedIn-spacer"></span>
       <span>Welcome!</span>
-      <span class="header-spacer"></span>
+      <span class="loggedIn-spacer"></span>
+      <button mat-icon-button>
+        <mat-icon matBadge="0" matBadgeColor="accent">shopping_cart</mat-icon>
+      </button>
       <button mat-icon-button (click)="[ui.logout(), ui.changePage(PageName.HOME)]">
         Logout
     </button>

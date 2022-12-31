@@ -22,6 +22,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatRadioModule} from '@angular/material/radio';
 import { CustomerComponent } from './components/customer/customer.component';
+import {MatBadgeModule} from '@angular/material/badge';
+
 
 
 @NgModule({
@@ -48,7 +50,8 @@ import { CustomerComponent } from './components/customer/customer.component';
     FormsModule,
     HttpClientModule,
     MatSnackBarModule,
-    MatRadioModule
+    MatRadioModule,
+    MatBadgeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
