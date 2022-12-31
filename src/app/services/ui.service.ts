@@ -45,11 +45,13 @@ export class UiService {
     this._snackBar.open(message, action);
   }
 
+  // added to save user info in local storage
   public validLogin(appUser: AppUser): void {
     localStorage.setItem('email', appUser.email);
     localStorage.setItem('password', appUser.password);
   }
 
+  // to clear user from local storage
   public logout(): void {
     localStorage.clear();
     this.currentUser = {} as AppUser;
