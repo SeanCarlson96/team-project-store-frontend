@@ -21,6 +21,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatRadioModule} from '@angular/material/radio';
+import { CustomerComponent } from './components/customer/customer.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import {MatRadioModule} from '@angular/material/radio';
     HomepageComponent,
     LoginComponent,
     SignupComponent,
-    ProductComponent
+    ProductComponent,
+    CustomerComponent
   ],
   imports: [
     BrowserModule,
