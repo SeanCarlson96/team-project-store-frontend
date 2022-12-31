@@ -1,9 +1,11 @@
 <mat-toolbar  color="primary">
+  
     <button mat-icon-button (click)="ui.changePage(PageName.HOME)">
       <mat-icon>home</mat-icon>
     </button>
-    <span>SAFO: Shop around and Find Out</span>
-    <span class="example-spacer"></span>
+
+    <span>SAFO: Shop Around, Find Out</span>
+    <span class="header-spacer"></span>
     <!-- toggles btn text based on user logged in -->
     <div *ngIf="ui.pageName===0; else userLoggedIn">
     <button mat-icon-button (click)="ui.changePage(PageName.LOGIN)">
@@ -14,7 +16,9 @@
     </button>
     </div>
 
-    <ng-template #userLoggedIn>
+    <ng-template #userLoggedIn>      
+      <span>Welcome!</span>
+      <span class="header-spacer"></span>
       <button mat-icon-button (click)="ui.changePage(PageName.HOME)">
         Logout
     </button>
