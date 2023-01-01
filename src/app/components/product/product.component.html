@@ -5,7 +5,7 @@
     <img class="card-image" mat-card-image  src="{{product?.image}}" alt="Photo of a Shiba Inu">
     <mat-card-content>
       <p>
-        {{product?.price}}
+        {{product?.price | currency}}
       </p>
     </mat-card-content>
     <mat-card-actions>
