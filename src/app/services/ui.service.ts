@@ -45,12 +45,20 @@ export class UiService {
   public products: Product[] = [this.product1, this.product2, this.product3, this.product4]
 
   constructor(http: HttpClient, private _snackBar: MatSnackBar) {
-    //this.pageName = localStorage.getItem("page")? +!localStorage.getItem("page") : PageName.HOME;
-    this.http = http // not needed if kept inside constructor
     this.getCategories();
+    //this.pageName = localStorage.getItem("page")? +!localStorage.getItem("page") : PageName.HOME;
+    this.http = http // not needed if kept inside of constructor.
+    // storing email and password so refresh won't return to home
+    const email = localStorage.getItem('email');
+    const password = localStorage.getItem('password');
+    if(email !== null && password !== null){
+      this.getAppUser(email, password)
+    }
+
   }
-   // Getters
-   public getCategories(): Category[]{
+  
+  //GETTERS
+  public getCategories(): Category[]{
     this.loadCategories();
     return this.categories;
   }
@@ -63,14 +71,31 @@ export class UiService {
   openSnackBar(message: string, action: string){
     this._snackBar.open(message, action);
   }
-  // GET request
+
+  // added to save user info in local storage
+  public validLogin(appUser: AppUser): void {
+    localStorage.setItem('email', appUser.email);
+    localStorage.setItem('password', appUser.password);
+  }
+
+  public loggedIn(): boolean {
+    return true;
+  }
+
+  // to clear user from local storage
+  public logout(): void {
+    localStorage.clear();
+    this.currentUser = {} as AppUser;
+  }
+
   getAppUser(liUsername: string, liPassword: string): void {
     this.http
-      .get<AppUser>(`http://localhost:8080/appusers?username=${liUsername}&password=${liPassword}`)
+      .get<AppUser>(`http://localhost:8080/users?email=${liUsername}&password=${liPassword}`)
       .pipe(take(1))
       .subscribe({
         next: appUser => {
         this.currentUser = appUser
+        this.validLogin(appUser);
       },
       error: () => this.openSnackBar('Invalid Credentials', 'Close'),
     })
@@ -104,7 +129,7 @@ export class UiService {
       coupons: []
     }
     this.http
-      .post<AppUser>('http://localhost:8080/appusers', this.newUser)
+      .post<AppUser>('http://localhost:8080/users', this.newUser)
       .pipe(take(1))
       .subscribe({
         next: () => this.openSnackBar('Registered Successfully', 'Close'),

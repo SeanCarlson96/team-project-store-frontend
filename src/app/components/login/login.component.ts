@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PageName } from 'src/app/enums/PageEnum';
 import { UiService } from 'src/app/services/ui.service';
 
 @Component({
@@ -7,9 +8,12 @@ import { UiService } from 'src/app/services/ui.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  private ui: UiService;
+  public ui: UiService;  
   public liUsername: string = ''
   public liPassword: string = ''
+
+  // needed change to product page
+  public PageName = PageName;
 
 
   constructor(ui: UiService){

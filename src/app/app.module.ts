@@ -21,6 +21,9 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatRadioModule} from '@angular/material/radio';
+import { CustomerComponent } from './components/customer/customer.component';
+import {MatBadgeModule} from '@angular/material/badge';
+
 
 
 @NgModule({
@@ -30,7 +33,8 @@ import {MatRadioModule} from '@angular/material/radio';
     HomepageComponent,
     LoginComponent,
     SignupComponent,
-    ProductComponent
+    ProductComponent,
+    CustomerComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +50,8 @@ import {MatRadioModule} from '@angular/material/radio';
     FormsModule,
     HttpClientModule,
     MatSnackBarModule,
-    MatRadioModule
+    MatRadioModule,
+    MatBadgeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
