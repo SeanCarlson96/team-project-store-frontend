@@ -21,6 +21,6 @@ export class HomepageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.categorySubscription.unsubscribe
+    this.categorySubscription.unsubscribe();
   }
 }
