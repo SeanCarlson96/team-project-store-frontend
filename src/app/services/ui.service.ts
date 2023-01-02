@@ -45,7 +45,7 @@ export class UiService {
   public products: Product[] = [this.product1, this.product2, this.product3, this.product4]
 
   constructor(http: HttpClient, private _snackBar: MatSnackBar) {
-    this.getCategories();
+    // this.getCategories();
     //this.pageName = localStorage.getItem("page")? +!localStorage.getItem("page") : PageName.HOME;
     this.http = http // not needed if kept inside of constructor.
     // storing email and password so refresh won't return to home

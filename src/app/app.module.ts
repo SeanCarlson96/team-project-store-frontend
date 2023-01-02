@@ -23,6 +23,7 @@ import { MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatRadioModule} from '@angular/material/radio';
 import { CustomerComponent } from './components/customer/customer.component';
 import {MatBadgeModule} from '@angular/material/badge';
+import { AdminComponent } from './components/admin/admin.component';
 
 
 
@@ -34,7 +35,8 @@ import {MatBadgeModule} from '@angular/material/badge';
     LoginComponent,
     SignupComponent,
     ProductComponent,
-    CustomerComponent
+    CustomerComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
