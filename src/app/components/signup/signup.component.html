@@ -23,15 +23,15 @@
     />
   </mat-form-field>
 
-  <mat-radio-group aria-label="Select an option" class="radio-group">
-    <mat-radio-button value="customer" #userType>Customer</mat-radio-button>
-    <mat-radio-button value="shopkeeper" #userType>Shopkeeper</mat-radio-button>
-    <mat-radio-button value="admin" #userType>Admin</mat-radio-button>
+  <mat-radio-group [(ngModel)]="newUserType" aria-label="Select an option" class="radio-group">
+    <mat-radio-button [value]="customer" #userType>Customer</mat-radio-button>
+    <mat-radio-button [value]="shopkeeper" #userType>Shopkeeper</mat-radio-button>
+    <mat-radio-button [value]="admin" #userType>Admin</mat-radio-button>
   </mat-radio-group>
 
   <button 
     mat-flat-button 
     color="primary" 
-    (click)="onSignUp(suEmail.value, suPassword.value, userType.value)"
+    (click)="onSignUp(suEmail.value, suPassword.value)"
     >Sign Up</button>
 </mat-card>

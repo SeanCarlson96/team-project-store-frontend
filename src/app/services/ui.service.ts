@@ -13,7 +13,8 @@ import { Category } from 'src/data/Category';
 export class UiService {
   private http: HttpClient //request to keep inside of constructor
   public currentUser = {} as AppUser
-  public pageName: number = PageName.HOME
+  public pageName: number// = PageName.HOME
+  //public pageIndex: number = PageName.HOME
   private newUser = {} as AppUser
   categories: Category[] = [];
   categories$: Subject<Category[]> = new Subject();
@@ -46,7 +47,7 @@ export class UiService {
 
   constructor(http: HttpClient, private _snackBar: MatSnackBar) {
     // this.getCategories();
-    //this.pageName = localStorage.getItem("page")? +!localStorage.getItem("page") : PageName.HOME;
+    localStorage.getItem("page") !== null ? this.pageName = +!localStorage.getItem("page") : this.pageName = PageName.HOME;
     this.http = http // not needed if kept inside of constructor.
     // storing email and password so refresh won't return to home
     const email = localStorage.getItem('email');
@@ -64,7 +65,7 @@ export class UiService {
   }
 
   public changePage(page: number): void {
-    //localStorage.setItem("page", page.toString());
+    localStorage.setItem("page", page.toString());
     this.pageName = page
   }
   
@@ -88,9 +89,9 @@ export class UiService {
     this.currentUser = {} as AppUser;
   }
 
-  getAppUser(liUsername: string, liPassword: string): void {
+  getAppUser(liEmail: string, liPassword: string): void {
     this.http
-      .get<AppUser>(`http://localhost:8080/users?email=${liUsername}&password=${liPassword}`)
+      .get<AppUser>(`http://localhost:8080/appusers?email=${liEmail}&password=${liPassword}`)
       .pipe(take(1))
       .subscribe({
         next: appUser => {
@@ -129,11 +130,11 @@ export class UiService {
       coupons: []
     }
     this.http
-      .post<AppUser>('http://localhost:8080/users', this.newUser)
+      .post<AppUser>('http://localhost:8080/appusers', this.newUser)
       .pipe(take(1))
       .subscribe({
         next: () => this.openSnackBar('Registered Successfully', 'Close'),
-        error: () => this.openSnackBar('Invalid Credentials', 'Close'),
+        error: () => this.openSnackBar('This Email is already registered, please sign in', 'Close'),
     })
 
   }

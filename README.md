@@ -1,13 +1,7 @@
 # FafoShopFe
 
-- Carl
-- Hector
-- Peter
+Trello Board: https://trello.com/b/z4WxY2F2/york-team-project
 
+Wireframe Design Plan: 
 
-- test2
-- 123
-- You're awesome
-
-- Mull and Null
-
+Data Models Plan: 

@@ -9,7 +9,7 @@ import { UiService } from 'src/app/services/ui.service';
 })
 export class LoginComponent implements OnInit {
   public ui: UiService;  
-  public liUsername: string = ''
+  public liEmail: string = ''
   public liPassword: string = ''
 
   // needed change to product page
@@ -26,9 +26,9 @@ export class LoginComponent implements OnInit {
   onSignUp() {
     throw new Error('Method not implemented.')
   }
-  onLogIn(liUsername: string, liPassword: string) {
-    this.liUsername = liUsername
+  onLogIn(liEmail: string, liPassword: string) {
+    this.liEmail = liEmail
     this.liPassword = liPassword
-    this.ui.getAppUser(this.liUsername, this.liPassword)
+    this.ui.getAppUser(this.liEmail, this.liPassword)
   }
 }

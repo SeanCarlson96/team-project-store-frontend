@@ -9,7 +9,7 @@
       matInput
       type="text"
       placeholder="My Email"
-      #liUsername
+      #liEmail
     />
   </mat-form-field>
 
@@ -24,7 +24,7 @@
   </mat-form-field>
 
   <button mat-flat-button color="primary" 
-  (click)="[onLogIn(liUsername.value, liPassword.value), ui.changePage(PageName.PRODUCTPAGE)]">Log In</button>
+  (click)="[onLogIn(liEmail.value, liPassword.value), ui.changePage(PageName.PRODUCTPAGE)]">Log In</button>
   <!-- added change page event to above button -->
   <button mat-flat-button color="basic" (click)="onSignUp()">Sign Up</button>
 </mat-card>

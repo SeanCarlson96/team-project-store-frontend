@@ -11,6 +11,10 @@ export class SignupComponent implements OnInit {
   public suEmail: string = ''
   public suPassword: string = ''
   public userType: string = ''
+  public newUserType: string = ''
+  public customer: string = 'customer'
+  public shopkeeper: string = 'shopkeeper'
+  public admin: string = 'admin'
 
   constructor(ui: UiService){
     this.ui = ui
@@ -18,10 +22,9 @@ export class SignupComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  onSignUp(suEmail: string, suPassword: string, userType: string) {
+  onSignUp(suEmail: string, suPassword: string) {
     this.suEmail = suEmail
     this.suPassword = suPassword
-    this.userType = userType
-    this.ui.addAppUser(this.suEmail, this.suPassword, this.userType)
+    this.ui.addAppUser(this.suEmail, this.suPassword, this.newUserType)
   }
 }
