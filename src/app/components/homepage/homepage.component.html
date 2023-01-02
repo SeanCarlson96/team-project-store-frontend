@@ -1,14 +1,33 @@
 <div class="category-container">
     <h4>Category</h4>
     <mat-form-field appearance="fill">
-    <mat-label>Select Category</mat-label>
-    <mat-select>
-        <mat-option *ngFor="let category of categories" [value]="category">
-        {{category}}
-        </mat-option>
-    </mat-select>
-    </mat-form-field>
+        <mat-label>Select Category</mat-label>
+        
+            <!-- w/ BE source -->
+            <!-- <mat-select [(ngModel)]="selectedCategory">
+                <mat-option *ngFor="let category of categories ">
+                    {{category}}
+                </mat-option>
+            </mat-select> -->
+            
+            <!-- No BE request -->
+        <mat-select [(ngModel)]="selectedCategory">
+            <mat-option *ngFor="let category of ui.uniqueCategories()" [value]="category">
+                {{category}}
+            </mat-option>
+        </mat-select>
 
+    </mat-form-field>
+</div>
+<div class="product-container">
+    <ng-container *ngFor="let product of ui.products">
+        <ng-container *ngFor="let category of product.categories">
+            <ng-container *ngIf="category.categoryName === selectedCategory">
+                <app-product [product]="product"></app-product>
+            </ng-container>
+        </ng-container>
+    </ng-container>
 </div>
 
-<app-product *ngFor="let product of ui.products" [product]="product"></app-product>
+
+<!-- <app-product *ngFor="let product of ui.products" [product]="product"></app-product> -->

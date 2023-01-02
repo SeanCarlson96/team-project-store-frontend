@@ -1,3 +1,6 @@
 .category-container {
     text-align: center;
 }
+.product-container{
+    display: flex;
+}
