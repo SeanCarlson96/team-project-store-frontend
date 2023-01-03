@@ -1,5 +1,6 @@
+<div class="card-container">
 <form [formGroup]="customerEditForm" (ngSubmit)="onSubmit()">
-<mat-card class="example-card">
+<mat-card class="edit-card">
     <mat-card-title>Edit Information</mat-card-title>
     <mat-card-content>    
         <mat-form-field appearance="fill">
@@ -15,7 +16,8 @@
 </mat-card>
 </form>
 
-<mat-card class="example-card">
+<mat-card class="cart-card">
     <mat-card-title>Order History</mat-card-title>
+    <mat-card-content>INSERT ORDER STUFF HERE{{ui.currentUser.carts}}</mat-card-content>
 </mat-card>
-
+</div>

@@ -1,7 +1,7 @@
 <mat-toolbar  color="primary">
   <!-- make check userType and display page -->
   <button mat-icon-button 
-  (click)="ui.currentUser.userType==='customer' ? ui.changePage(PageName.HOME) : ui.changePage(PageName.HOME)">
+  (click)="ui.currentUser.id !== null ? ui.changePage(PageName.HOME) : ui.changePage(PageName.HOME)">
       <mat-icon>home</mat-icon>
     </button>
     <span>SAFO: Shop Around, Find Out</span>  
