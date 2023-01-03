@@ -46,7 +46,7 @@ export class UiService {
   public products: Product[] = [this.product1, this.product2, this.product3, this.product4]
 
   constructor(private http: HttpClient, private _snackBar: MatSnackBar) {
-    // this.getCategories();
+    this.getCategories();
     localStorage.getItem("page") !== null ? this.pageName = +!localStorage.getItem("page") : this.pageName = PageName.HOME;
     
     // storing email and password so refresh won't return to home
@@ -121,7 +121,6 @@ export class UiService {
   }
 
   public loadCategories(): void{
-    //might change URL
     this.http.get<Category[]>(this.categoryUrl)
     .pipe(
       take(1),
@@ -136,9 +135,7 @@ export class UiService {
       })
     
   }
-  //Declarative method // needs http property field removed
-  // categories$ = this.http.get<Category[]>(this.categoryUrl).pipe(take(1)).subscribe(category => this.categories = category);
-  
+ 
   // POST requests
   addAppUser(suEmail: string, suPassword: string, userType: string): void {
     this.newUser = {
@@ -157,19 +154,6 @@ export class UiService {
         error: () => this.openSnackBar('This Email is already registered, please sign in', 'Close'),
     })
 
-  }
-
-  //temp for categories
-  public uniqueCategories(): Set<string>{
-    const arr = this.products;
-    let unique = new Set<string>();
-    arr.forEach(obj => {
-      let categories = obj.categories;
-      categories.forEach(category=> {
-        unique.add(category.categoryName)
-      })
-    })
-    return unique;
   }
 
   public whenCategoryUpdates(): Observable<Category[]>{

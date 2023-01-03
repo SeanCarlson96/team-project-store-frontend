@@ -5,23 +5,16 @@
         
             <!-- w/ BE source -->
             <mat-select [(ngModel)]="selectedCategory">
-                <mat-option *ngFor="let category of categories ">
-                    {{category}}
+                <mat-option *ngFor="let category of categories" [value]="category.categoryName">
+                    {{category.categoryName}}
                 </mat-option>
             </mat-select>
-            
-            <!-- No BE request -->
-        <!-- <mat-select [(ngModel)]="selectedCategory">
-            <mat-option *ngFor="let category of ui.uniqueCategories()" [value]="category">
-                {{category}}
-            </mat-option>
-        </mat-select> -->
-
     </mat-form-field>
 </div>
+
 <div class="product-container">
-    <ng-container *ngFor="let product of ui.products">
-        <ng-container *ngFor="let category of product.categories">
+    <ng-container *ngFor="let category of categories">
+        <ng-container *ngFor="let product of category.products">
             <ng-container *ngIf="category.categoryName === selectedCategory">
                 <app-product [product]="product"></app-product>
             </ng-container>
@@ -29,5 +22,7 @@
     </ng-container>
 </div>
 
-
-<!-- <app-product *ngFor="let product of ui.products" [product]="product"></app-product> -->
+<!-- Displaying initial products -->
+<div class="product-container">
+    <app-product *ngFor="let product of uniqueCategoryProducts()" [product]="product"></app-product>
+</div>
