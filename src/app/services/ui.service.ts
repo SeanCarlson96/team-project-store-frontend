@@ -10,8 +10,7 @@ import { Category } from 'src/data/Category';
 @Injectable({
   providedIn: 'root'
 })
-export class UiService {
-  private http: HttpClient //request to keep inside of constructor
+export class UiService {  
   public currentUser = {} as AppUser
   public pageName: number = PageName.HOME
   //public pageIndex: number = PageName.HOME
@@ -46,10 +45,10 @@ export class UiService {
   // Dummy array of product cards
   public products: Product[] = [this.product1, this.product2, this.product3, this.product4]
 
-  constructor(http: HttpClient, private _snackBar: MatSnackBar) {
+  constructor(private http: HttpClient, private _snackBar: MatSnackBar) {
     // this.getCategories();
-    localStorage.getItem("page") !== null ? this.pageName = Number(localStorage.getItem("page")) : this.pageName = PageName.HOME;
-    this.http = http // not needed if kept inside of constructor.
+    localStorage.getItem("page") !== null ? this.pageName = +!localStorage.getItem("page") : this.pageName = PageName.HOME;
+    
     // storing email and password so refresh won't return to home
     const email = localStorage.getItem('email');
     const password = localStorage.getItem('password');
@@ -173,5 +172,19 @@ export class UiService {
 
   public whenCategoryUpdates(): Observable<Category[]>{
     return this.categories$.asObservable();
+  }
+
+  // PUT requests
+
+  public editCustomer(email: string, password: string): void {
+    this.http.put('http://localhost:8080/appusers', {      
+      email: email,
+      password: password
+    })
+    .pipe(take(1))
+    .subscribe({
+      next: () => this.openSnackBar('Updated Successfully', 'Close'),
+      error: () => this.openSnackBar('Your account coudn\'t be updated, please try again later', 'Close'),
+    })
   }
 }

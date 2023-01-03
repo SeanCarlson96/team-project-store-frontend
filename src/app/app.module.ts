@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {MatSelectModule} from '@angular/material/select';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 import { AppComponent } from './app.component';
@@ -67,7 +68,8 @@ import { ShopkeeperSalesComponent } from './components/shopkeeper-sales/shopkeep
     HttpClientModule,
     MatSnackBarModule,
     MatRadioModule,
-    MatBadgeModule
+    MatBadgeModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
