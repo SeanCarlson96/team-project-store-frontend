@@ -26,6 +26,11 @@ import {MatBadgeModule} from '@angular/material/badge';
 import { AdminComponent } from './components/admin/admin.component';
 import { ProductPageComponent } from './components/product-page/product-page.component';
 import { CartComponent } from './components/cart/cart.component';
+import { ShopkeeperComponent } from './components/shopkeeper/shopkeeper.component';
+import { ShopkeeperProductsComponent } from './components/shopkeeper-products/shopkeeper-products.component';
+import { ShopkeeperCategoriesComponent } from './components/shopkeeper-categories/shopkeeper-categories.component';
+import { ShopkeeperCouponsComponent } from './components/shopkeeper-coupons/shopkeeper-coupons.component';
+import { ShopkeeperSalesComponent } from './components/shopkeeper-sales/shopkeeper-sales.component';
 
 
 
@@ -40,7 +45,12 @@ import { CartComponent } from './components/cart/cart.component';
     CustomerComponent,
     AdminComponent,
     ProductPageComponent,
-    CartComponent
+    CartComponent,
+    ShopkeeperComponent,
+    ShopkeeperProductsComponent,
+    ShopkeeperCategoriesComponent,
+    ShopkeeperCouponsComponent,
+    ShopkeeperSalesComponent
   ],
   imports: [
     BrowserModule,

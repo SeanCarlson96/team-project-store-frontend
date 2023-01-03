@@ -13,7 +13,7 @@ import { Category } from 'src/data/Category';
 export class UiService {
   private http: HttpClient //request to keep inside of constructor
   public currentUser = {} as AppUser
-  public pageName: number// = PageName.HOME
+  public pageName: number = PageName.HOME
   //public pageIndex: number = PageName.HOME
   private newUser = {} as AppUser
   categories: Category[] = [];
@@ -48,7 +48,7 @@ export class UiService {
 
   constructor(http: HttpClient, private _snackBar: MatSnackBar) {
     // this.getCategories();
-    localStorage.getItem("page") !== null ? this.pageName = +!localStorage.getItem("page") : this.pageName = PageName.HOME;
+    localStorage.getItem("page") !== null ? this.pageName = Number(localStorage.getItem("page")) : this.pageName = PageName.HOME;
     this.http = http // not needed if kept inside of constructor.
     // storing email and password so refresh won't return to home
     const email = localStorage.getItem('email');
@@ -56,7 +56,6 @@ export class UiService {
     if(email !== null && password !== null){
       this.getAppUser(email, password)
     }
-
   }
   
   //GETTERS
