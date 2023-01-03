@@ -62,7 +62,6 @@ export class UiService {
     this.loadCategories();
     return this.categories;
   }
-
   
   public getProductById(id: number | undefined): void {
     // this.http.get<Product>(`http://localhost:8080/products?id=${id}`)
@@ -78,9 +77,25 @@ export class UiService {
       if( id === product.id ) {
         this.selectedProduct = product
       }
+    }
   }
-}
-  
+
+  public getUserType(userType: string): void {
+    //localStorage.getItem('userType')
+    switch(userType) {
+      case 'customer':
+        this.pageName = 0;
+        break;        
+      case 'shopkeeper':
+        this.pageName = 6;
+        break;        
+      case 'admin':
+        this.pageName = 7;
+        break;
+      default:
+        this.pageName = 0;
+    }
+  }
 
   public changePage(page: number): void {
     localStorage.setItem("page", page.toString());
@@ -115,6 +130,7 @@ export class UiService {
         next: appUser => {
         this.currentUser = appUser
         this.validLogin(appUser);
+        this.getUserType(appUser.userType)        
       },
       error: () => this.openSnackBar('Invalid Credentials', 'Close'),
     })

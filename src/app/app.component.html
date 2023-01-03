@@ -5,4 +5,5 @@
 <app-signup *ngIf="ui.pageName === PageName.SIGNUP"></app-signup>
 <app-product-page *ngIf="ui.pageName === PageName.PRODUCTPAGE"></app-product-page>
 <app-cart *ngIf="ui.pageName === PageName.CART"></app-cart>
-<app-shopkeeper *ngIf="ui.currentUser.userType==='shopkeeper'"></app-shopkeeper>
+<app-shopkeeper *ngIf="ui.pageName === PageName.SHOPKEEPERPAGE"></app-shopkeeper>
+<app-admin *ngIf="ui.pageName === PageName.ADMIN"></app-admin>
