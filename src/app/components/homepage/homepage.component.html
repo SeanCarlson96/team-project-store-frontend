@@ -4,18 +4,18 @@
         <mat-label>Select Category</mat-label>
         
             <!-- w/ BE source -->
-            <!-- <mat-select [(ngModel)]="selectedCategory">
+            <mat-select [(ngModel)]="selectedCategory">
                 <mat-option *ngFor="let category of categories ">
                     {{category}}
                 </mat-option>
-            </mat-select> -->
+            </mat-select>
             
             <!-- No BE request -->
-        <mat-select [(ngModel)]="selectedCategory">
+        <!-- <mat-select [(ngModel)]="selectedCategory">
             <mat-option *ngFor="let category of ui.uniqueCategories()" [value]="category">
                 {{category}}
             </mat-option>
-        </mat-select>
+        </mat-select> -->
 
     </mat-form-field>
 </div>

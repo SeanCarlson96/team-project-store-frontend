@@ -19,7 +19,7 @@ export class UiService {
   categories: Category[] = [];
   categories$: Subject<Category[]> = new Subject();
 
-  private categoryUrl = 'http://localhost:8080/category';
+  private categoryUrl = 'http://localhost:8080/categories';
 
    // Dummy data for product cards
   public product1: Product = {
@@ -110,11 +110,13 @@ export class UiService {
       catchError(err => {throw 'error source:' +err})
       ).subscribe({
         next: category =>{
+          console.log(category)
           this.categories = category;
-          this.categories = category;
+          this.categories$.next(category);
         },
         error: err => console.error(err)
-      });
+      })
+    
   }
   //Declarative method // needs http property field removed
   // categories$ = this.http.get<Category[]>(this.categoryUrl).pipe(take(1)).subscribe(category => this.categories = category);
