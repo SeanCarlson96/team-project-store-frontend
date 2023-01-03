@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UiService } from 'src/app/services/ui.service';
+import { PageName } from 'src/app/enums/PageEnum';
+
 
 @Component({
   selector: 'app-product-page',
@@ -8,6 +10,8 @@ import { UiService } from 'src/app/services/ui.service';
 })
 export class ProductPageComponent implements OnInit {
   public quantityInCart = 0
+  public PageName = PageName
+
 
   constructor(public ui: UiService) { }
 

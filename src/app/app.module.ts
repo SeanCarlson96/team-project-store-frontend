@@ -25,6 +25,7 @@ import { CustomerComponent } from './components/customer/customer.component';
 import {MatBadgeModule} from '@angular/material/badge';
 import { AdminComponent } from './components/admin/admin.component';
 import { ProductPageComponent } from './components/product-page/product-page.component';
+import { CartComponent } from './components/cart/cart.component';
 
 
 
@@ -38,7 +39,8 @@ import { ProductPageComponent } from './components/product-page/product-page.com
     ProductComponent,
     CustomerComponent,
     AdminComponent,
-    ProductPageComponent
+    ProductPageComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,
