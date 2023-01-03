@@ -1,12 +1,13 @@
 <mat-toolbar  color="primary">
   <!-- make check userType and display page -->
   <button mat-icon-button 
-  (click)="ui.currentUser.id !== null ? ui.changePage(PageName.HOME) : ui.changePage(PageName.HOME)">
+  (click)="ui.currentUser.userType === 'customer' ? ui.changePage(PageName.HOME) 
+            : ui.changePage(PageName.SHOPKEEPERPAGE)">
       <mat-icon>home</mat-icon>
     </button>
     <span>SAFO: Shop Around, Find Out</span>  
     <span class="header-spacer"></span>
-    <div *ngIf="!ui.currentUser.email; else userLoggedIn">    
+    <div *ngIf="!ui.currentUser.id; else userLoggedIn">    
     <button mat-icon-button (click)="ui.changePage(PageName.LOGIN)">
         Login
     </button>
