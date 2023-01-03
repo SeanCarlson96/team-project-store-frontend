@@ -1,0 +1,31 @@
+<div>
+   <h1>{{ui.selectedProduct.productName}}</h1>
+   <div class="product-body">
+        <img class="product-image"  src="{{ui.selectedProduct.image}}" alt="Photo of a Shiba Inu">
+        <div>
+            <h2>Description</h2>
+            <p>{{ui.selectedProduct.description}}</p>
+        </div>
+   </div>
+   <div>
+        <p>Current Price:  {{ui.selectedProduct.price}}</p>
+        <p>Sale Price:</p>
+        <p *ngIf="ui.selectedProduct.discontinued"><span class="red">Discontinued</span></p>
+        <p *ngIf="!ui.selectedProduct.discontinued">{{ui.selectedProduct.quantity}} in stock</p>
+   </div>
+   <div>
+        <div *ngIf="ui.selectedProduct.quantity > 0 && !ui.selectedProduct.discontinued">
+            <button mat-mini-fab color="primary" aria-label="Example icon button with a plus one icon" (click)="quantityPlusOne()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+        <p>Purchase Quantity {{quantityInCart}}</p>
+        <div *ngIf="ui.selectedProduct.quantity >= 0 && !ui.selectedProduct.discontinued">
+            <button mat-mini-fab color="accent" aria-label="Example icon button with a plus one icon" 
+            (click)="quantityMinusOne()">
+                <mat-icon>remove</mat-icon>
+            </button>
+        </div>
+        <button (click)="ui.changePage(PageName.CART)">Add to Cart</button>
+   </div>
+</div>

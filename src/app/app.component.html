@@ -1,5 +1,8 @@
 <app-header *ngIf="ui.loggedIn()"></app-header>
-<app-customer *ngIf="ui.currentUser.userType==='customer'"></app-customer>
+<app-customer *ngIf="ui.pageName === PageName.CUSTOMERPAGE"></app-customer>
 <app-homepage *ngIf="ui.pageName === PageName.HOME"></app-homepage>
 <app-login *ngIf="ui.pageName === PageName.LOGIN"></app-login>
 <app-signup *ngIf="ui.pageName === PageName.SIGNUP"></app-signup>
+<app-product-page *ngIf="ui.pageName === PageName.PRODUCTPAGE"></app-product-page>
+<app-cart *ngIf="ui.pageName === PageName.CART"></app-cart>
+<app-shopkeeper *ngIf="ui.currentUser.userType==='shopkeeper'"></app-shopkeeper>

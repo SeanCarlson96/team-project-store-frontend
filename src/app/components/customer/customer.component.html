@@ -1,2 +1,23 @@
-<app-homepage></app-homepage>
+<div class="card-container">
+<form [formGroup]="customerEditForm" (ngSubmit)="onSubmit()">
+<mat-card class="edit-card">
+    <mat-card-title>Edit Information</mat-card-title>
+    <mat-card-content>    
+        <mat-form-field appearance="fill">
+            <input matInput formControlName="email" placeholder="New Email">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <input matInput formControlName="password" type="password" placeholder="New Password">
+        </mat-form-field>    
+    </mat-card-content>
+  <mat-card-actions>
+    <button mat-flat-button color="primary" type="submit">Submit</button>
+</mat-card-actions>      
+</mat-card>
+</form>
 
+<mat-card class="cart-card">
+    <mat-card-title>Order History</mat-card-title>
+    <mat-card-content>INSERT ORDER STUFF HERE{{ui.currentUser.carts}}</mat-card-content>
+</mat-card>
+</div>

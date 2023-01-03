@@ -1,0 +1,12 @@
+
+<div class="button-tabs">
+    <button mat-raised-button color="basic" (click)="changeTab(1)">Products</button>
+    <button mat-raised-button color="basic" (click)="changeTab(2)">Categories</button>
+    <button mat-raised-button color="basic" (click)="changeTab(3)">Coupons</button>
+    <button mat-raised-button color="basic" (click)="changeTab(4)">Sales</button>
+</div>
+
+<app-shopkeeper-products *ngIf="this.tab === 1"></app-shopkeeper-products>
+<app-shopkeeper-categories *ngIf="this.tab === 2"></app-shopkeeper-categories>
+<app-shopkeeper-coupons *ngIf="this.tab === 3"></app-shopkeeper-coupons>
+<app-shopkeeper-sales *ngIf="this.tab === 4"></app-shopkeeper-sales>
