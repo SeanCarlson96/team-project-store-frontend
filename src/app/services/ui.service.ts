@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppUser } from 'src/data/User';
-import { catchError, Observable, Subject, take, throwError} from 'rxjs';
+import { catchError, Observable, pipe, Subject, take, throwError} from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PageName } from '../enums/PageEnum';
 import { Product } from 'src/data/Product';
@@ -18,6 +18,7 @@ export class UiService {
   private newUser = {} as AppUser
   categories: Category[] = [];
   categories$: Subject<Category[]> = new Subject();
+  public selectedProduct = {} as Product
 
   private categoryUrl = 'http://localhost:8080/category';
 
@@ -25,10 +26,10 @@ export class UiService {
   public product1: Product = {
     id: 1, productName: "dog", price: 100.00, sale: null, categories: [{id: 10, categoryName:'animals',products: []}], description: '', discontinued: false,
     image: 'https://material.angular.io/assets/img/examples/shiba2.jpg',
-     availableDate: null,  quantity: 1, minAdPrice: 75.00
+     availableDate: null,  quantity: 10, minAdPrice: 75.00
   }
   public product2: Product = {
-    id: 2, productName: "cat", price: 150.00, sale: null, categories: [{id: 11, categoryName:'animals',products: []}], description: '', discontinued: false,
+    id: 2, productName: "cat", price: 150.00, sale: null, categories: [{id: 11, categoryName:'animals',products: []}], description: 'This is a cat', discontinued: true,
     image: 'https://static01.nyt.com/images/2021/09/14/science/07CAT-STRIPES/07CAT-STRIPES-mediumSquareAt3X-v2.jpg',
      availableDate: null,  quantity: 1, minAdPrice: 75.00
   }
@@ -63,6 +64,25 @@ export class UiService {
     this.loadCategories();
     return this.categories;
   }
+
+  
+  public getProductById(id: number | undefined): void {
+    // this.http.get<Product>(`http://localhost:8080/products?id=${id}`)
+    //   .pipe(take(1))
+    //   .subscribe({ 
+    //     next: product => {
+    //     this.selectedProduct = product
+    //     console.log(this.selectedProduct)
+    //   },
+    //   error: () => this.openSnackBar('Problem getting product', 'Close')
+    // })
+    for(let product of this.products) {
+      if( id === product.id ) {
+        this.selectedProduct = product
+      }
+  }
+}
+  
 
   public changePage(page: number): void {
     localStorage.setItem("page", page.toString());
