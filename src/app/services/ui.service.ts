@@ -80,8 +80,7 @@ export class UiService {
     }
   }
 
-  public getUserType(userType: string): void {
-    //localStorage.getItem('userType')
+  public getUserType(userType: string): void {    
     switch(userType) {
       case 'customer':
         this.pageName = 0;
@@ -192,14 +191,20 @@ export class UiService {
 
   // PUT requests
 
-  public editCustomer(email: string, password: string): void {
-    this.http.put('http://localhost:8080/appusers', {      
-      email: email,
-      password: password
+  public editCustomer(currentUser: AppUser, newEmail: string, newPassword: string): void {
+    
+    this.http.put<AppUser>(`http://localhost:8080/appusers/${currentUser.id}`, {
+      ...currentUser,
+      email: newEmail,
+      password: newPassword
     })
     .pipe(take(1))
     .subscribe({
-      next: () => this.openSnackBar('Updated Successfully', 'Close'),
+      next: () => {
+        // localStorage.setItem('email', _email);
+        // localStorage.setItem('password', _password);
+        this.openSnackBar('Updated Successfully', 'Close')
+      },
       error: () => this.openSnackBar('Your account coudn\'t be updated, please try again later', 'Close'),
     })
   }
