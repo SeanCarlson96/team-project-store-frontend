@@ -18,6 +18,7 @@ export class UiService {
   private newUser = {} as AppUser
   categories: Category[] = [];
   categories$: Subject<Category[]> = new Subject();
+  public selectedProduct = {} as Product
 
   private categoryUrl = 'http://localhost:8080/category';
 
@@ -28,7 +29,7 @@ export class UiService {
      availableDate: null,  quantity: 1, minAdPrice: 75.00
   }
   public product2: Product = {
-    id: 2, productName: "cat", price: 150.00, sale: null, categories: [{id: 11, categoryName:'animals',products: []}], description: '', discontinued: false,
+    id: 2, productName: "cat", price: 150.00, sale: null, categories: [{id: 11, categoryName:'animals',products: []}], description: 'This is a cat', discontinued: true,
     image: 'https://static01.nyt.com/images/2021/09/14/science/07CAT-STRIPES/07CAT-STRIPES-mediumSquareAt3X-v2.jpg',
      availableDate: null,  quantity: 1, minAdPrice: 75.00
   }
@@ -62,6 +63,15 @@ export class UiService {
   public getCategories(): Category[]{
     this.loadCategories();
     return this.categories;
+  }
+
+  
+  public getProductByName(product: Product | undefined): void {
+    for(let eachproduct of this.products) {
+      if( product?.id === eachproduct.id ) {
+        this.selectedProduct = product
+      }
+    }
   }
 
   public changePage(page: number): void {

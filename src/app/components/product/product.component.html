@@ -9,6 +9,6 @@
       </p>
     </mat-card-content>
     <mat-card-actions>
-      <button class="card-button" mat-button (click)="ui.changePage(PageName.PRODUCTPAGE)">View Product</button>
+      <button class="card-button" mat-button (click)="ui.changePage(PageName.PRODUCTPAGE); ui.getProductByName(product)">View Product</button>
     </mat-card-actions>
 </mat-card>

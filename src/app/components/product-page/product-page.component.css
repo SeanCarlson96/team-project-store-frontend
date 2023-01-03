@@ -1,0 +1,12 @@
+.product-image {
+    max-width: 300px;
+    max-height: 300px;
+}
+
+.product-body {
+    display: flex;
+}
+
+.red {
+    color: red;
+}

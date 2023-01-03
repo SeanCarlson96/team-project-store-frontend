@@ -24,6 +24,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import { CustomerComponent } from './components/customer/customer.component';
 import {MatBadgeModule} from '@angular/material/badge';
 import { AdminComponent } from './components/admin/admin.component';
+import { ProductPageComponent } from './components/product-page/product-page.component';
 
 
 
@@ -36,7 +37,8 @@ import { AdminComponent } from './components/admin/admin.component';
     SignupComponent,
     ProductComponent,
     CustomerComponent,
-    AdminComponent
+    AdminComponent,
+    ProductPageComponent
   ],
   imports: [
     BrowserModule,
