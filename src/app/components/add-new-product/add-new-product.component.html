@@ -1,0 +1,64 @@
+<h3 style="margin-left: 5vw;">Add Product</h3><br/>
+<div class="container">
+        <mat-form-field appearance="fill">
+            <mat-label>Product Name</mat-label>
+            <input name="newProductProductName" matInput
+            [(ngModel)]="newProductProductName" required />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Applicable Categories</mat-label>
+            <mat-select name="newProductCategories" matInput
+            [(ngModel)]="newProductCategories" multiple required>
+                <mat-option>Please Select</mat-option>
+                <mat-option *ngFor="let category of ui.categories" [value]="category.id">{{category.categoryName}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Description</mat-label>
+            <textarea name="newProductDescription" matInput [(ngModel)]="newProductDescription"></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Price</mat-label>
+            <input name="newProductPrice" matInput type="number"
+            [(ngModel)]="newProductPrice" required />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>MAP</mat-label>
+            <input name="newProductMinAdPrice" matInput type="number"
+            [(ngModel)]="newProductMinAdPrice" required />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Quantity in Stock</mat-label>
+            <input name="newProductQuantity" matInput type="number"
+            [(ngModel)]="newProductQuantity" required />
+        </mat-form-field> 
+        <mat-form-field appearance="fill">
+            <mat-label>Product Image URL</mat-label>
+            <input name="newProductImage" matInput [(ngModel)]="newProductImage"
+            required />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Choose a date</mat-label>
+            <input matInput [matDatepicker]="picker"
+            [(ngModel)]="newProductAvailableDate" />
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Sale</mat-label>
+            <mat-select name="newProductSale" [(ngModel)]="newProductSaleId" matInput>
+                <mat-option>Please Select</mat-option>
+                <mat-option *ngFor="let sale of ui.sales" [value]="sale.id">{{sale.saleName}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div>
+            <mat-label>Discontinued?</mat-label>
+            <mat-checkbox name="newProductDiscontinued" [(ngModel)]="newProductDiscontinued"></mat-checkbox>
+        </div>
+
+        <button mat-icon-button type="submit" color="accent" (click)="createProduct()">
+            <mat-icon>add_box</mat-icon>
+            Add Product
+        </button>
+</div>

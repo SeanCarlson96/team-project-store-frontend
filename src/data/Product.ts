@@ -10,7 +10,7 @@ export interface Product {
     description: string
     discontinued: boolean
     image: string
-    availableDate: Date | null
+    availableDate: Date //| null
     quantity: number
     minAdPrice: number
-}
+} 

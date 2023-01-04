@@ -1,1 +1,48 @@
-<p>shopkeeper-products works!</p>
+<div class="add-btn" *ngIf="editProduct < 0">
+<button mat-flat-button color="accent" *ngIf="newProduct===false" (click)="newProduct = true">Add New</button>
+<button mat-flat-button color="accent" *ngIf="newProduct===true" (click)="newProduct = false; ui.getProducts();">Products Table</button>
+</div>
+<div class="add-btn" *ngIf="editProduct > -1">
+  <button mat-flat-button color="accent" *ngIf="newProduct===false"
+  (click)="newProduct = false; editProduct = -1">Products Table</button>
+</div>
+
+<app-add-new-product *ngIf="newProduct===true"></app-add-new-product>
+<app-edit-product *ngIf="editProduct > -1"></app-edit-product>
+
+<div *ngIf="newProduct===false && editProduct < 0" class="table-container">
+
+    <table mat-table [dataSource]="this.dataSource" class="mat-elevation-z8">
+       
+        <ng-container matColumnDef="Delete">
+          <th mat-header-cell *matHeaderCellDef> Delete </th>
+          <td mat-cell *matCellDef="let element" (click)="ui.deleteProduct(element.id)">
+          <mat-icon color="accent">delete_forever</mat-icon></td>
+        </ng-container>
+    
+        <ng-container matColumnDef="Edit">
+          <th mat-header-cell *matHeaderCellDef> Edit </th>
+          <td mat-cell *matCellDef="let element" (click)="openProductEdit(element.id)"><mat-icon>edit</mat-icon></td>
+        </ng-container>
+      
+        <ng-container matColumnDef="productName">
+          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.productName}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="Price">
+          <th mat-header-cell *matHeaderCellDef> Price </th>
+          <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="Quantity">
+          <th mat-header-cell *matHeaderCellDef> Quantity </th>
+          <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+</div>
