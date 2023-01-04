@@ -1,0 +1,33 @@
+table {
+    width: 100%;
+  }
+  
+  .mat-mdc-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  td, th {
+    width: 25%;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .deleteIcon:hover {
+    background-color: rgb(132, 18, 18);
+    cursor: pointer;
+  }
+
+  .create-user-container{
+    display: flex;
+    align-items: center;
+  }
+  .radio-btns{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
