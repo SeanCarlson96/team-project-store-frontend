@@ -19,6 +19,7 @@ export class CustomerComponent implements OnInit {
   public onSubmit(): void {
     console.log(this.customerEditForm.value)
     this.ui.editCustomer(
+      this.ui.currentUser,
       this.customerEditForm.value.email,
       this.customerEditForm.value.password)
   }
