@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatBadge } from '@angular/material/badge';
 import { PageName } from 'src/app/enums/PageEnum';
 import { UiService } from 'src/app/services/ui.service';
 
@@ -8,19 +9,18 @@ import { UiService } from 'src/app/services/ui.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  public ui: UiService
+  
   public PageName = PageName
-  public cartBadge: number = 0
+  public cartBadge: string | null = "2"
 
-  constructor(ui: UiService){
-    this.ui = ui
-  }
+  constructor(public ui: UiService){  }
 
   ngOnInit(): void {
   }
   
   public updateCartBadge(): void {
-    
+    if(this.ui.currentUser.carts.length < 1) 
+      this.cartBadge = null;    
   }
 
 }
