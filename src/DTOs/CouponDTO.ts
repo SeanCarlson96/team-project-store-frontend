@@ -7,5 +7,5 @@ export interface CouponDTO {
     stopDate: Date
     useLimit: number
     percentage: number
-    userId: AppUserDTO
+    userId: number
 }
