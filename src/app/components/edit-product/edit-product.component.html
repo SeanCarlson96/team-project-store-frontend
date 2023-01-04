@@ -1,0 +1,65 @@
+
+<h3 style="margin-left: 5vw;">Edit Product</h3><br/>
+<div class="container">
+    <mat-form-field appearance="fill">
+        <mat-label>Product Name</mat-label>
+        <input name="editProductProductName" matInput
+        [(ngModel)]="editProductProductName" required />
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Applicable Categories</mat-label>
+        <mat-select name="editProductCategories" matInput
+        [(ngModel)]="editProductCategories" multiple required>
+            <mat-option>Please Select</mat-option>
+            <mat-option *ngFor="let category of ui.categories" [value]="category.id">{{category.categoryName}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Description</mat-label>
+        <textarea name="editProductDescription" matInput [(ngModel)]="editProductDescription"></textarea>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Price</mat-label>
+        <input name="editProductPrice" matInput type="number"
+        [(ngModel)]="editProductPrice" required />
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>MAP</mat-label>
+        <input name="editProductMinAdPrice" matInput type="number"
+        [(ngModel)]="editProductMinAdPrice" required />
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Quantity in Stock</mat-label>
+        <input name="editProductQuantity" matInput type="number"
+        [(ngModel)]="editProductQuantity" required />
+    </mat-form-field> 
+    <mat-form-field appearance="fill">
+        <mat-label>Product Image URL</mat-label>
+        <input name="editProductImage" matInput [(ngModel)]="editProductImage"
+        required />
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Choose a date</mat-label>
+        <input matInput [matDatepicker]="picker"
+        [(ngModel)]="editProductAvailableDate" />
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Sale</mat-label>
+        <mat-select name="editProductSale" [(ngModel)]="editProductSaleId" matInput>
+            <mat-option>Please Select</mat-option>
+            <mat-option *ngFor="let sale of ui.sales" [value]="sale.id">{{sale.saleName}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <div>
+        <mat-label>Discontinued?</mat-label>
+        <mat-checkbox name="editProductDiscontinued" [(ngModel)]="editProductDiscontinued"></mat-checkbox>
+    </div>
+
+    <button mat-icon-button  color="accent" (click)="updateProduct()">
+        <mat-icon>edit</mat-icon>
+        Update Product
+    </button>
+</div>

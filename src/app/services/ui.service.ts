@@ -6,6 +6,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { PageName } from '../enums/PageEnum';
 import { Product } from 'src/data/Product';
 import { Category } from 'src/data/Category';
+import { Sale } from 'src/data/Sale';
+import { ProductDTO } from 'src/DTOs/ProductDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +19,14 @@ export class UiService {
   private newUser = {} as AppUser
   categories: Category[] = [];
   appUsers: AppUser[] = [];
+  sales: Sale[] = [];
+  sales$: Subject<Sale[]> = new Subject();
   categories$: Subject<Category[]> = new Subject();
   appUsers$: Subject<AppUser[]> = new Subject();
+  private productsSubject: Subject<Product[]> = new Subject()
   public selectedProduct = {} as Product
   public products: Product[] = []
+  public productIdToEdit: number = 0
 
   private categoryUrl = 'http://localhost:8080/categories';
   private appUsersUrl = 'http://localhost:8080/appusers';
@@ -51,6 +57,7 @@ export class UiService {
 
   constructor(private http: HttpClient, private _snackBar: MatSnackBar) {
     this.getCategories();
+    this.loadSales();
     this.getUsers();
     localStorage.getItem("page") !== null ? this.pageName = +!localStorage.getItem("page") : this.pageName = PageName.HOME;
     
@@ -74,6 +81,22 @@ export class UiService {
     this.loadUsers();
     return this.appUsers;
   }
+  public getProducts(){
+    this.http
+      .get<Product[]>('http://localhost:8080/products')
+      .pipe(take(1))
+      .subscribe({
+        next: products => {
+                this.products = products
+                this.productsSubject.next(this.products)
+              },
+        error: () => console.log('something went wrong in getProducts()')
+    })
+  }
+  whenProductsUpdates(): Observable<Product[]>{
+    return this.productsSubject.asObservable()
+  }
+
   
   public getProductById(id: number | undefined): void {
     this.http.get<Product>(`http://localhost:8080/products?id=${id}`)
@@ -90,18 +113,6 @@ export class UiService {
     //     this.selectedProduct = product
     //   }
     // }
-  }
-
-  public getProducts(): void {
-    this.http.get<Product[]>('http://localhost:8080/products')
-      .pipe(take(1))
-      .subscribe({
-        next: product => {
-          this.products = product
-          console.log(this.products)
-      },
-      error: () => this.openSnackBar('Products did not load', 'Close')
-      })
   }
 
   public getUserType(userType: string): void {    
@@ -197,6 +208,17 @@ export class UiService {
         error: err => console.error(err)
       })
   }
+  public loadSales(): void{
+    this.http.get<Sale[]>('http://localhost:8080/sales')
+    .pipe(take(1))
+      .subscribe({
+        next: sales => {
+          this.sales = sales;
+          this.sales$.next(sales);
+        },
+      error: () => this.openSnackBar('Issue retreiving Sales', 'Close'),
+    })
+  }
 
   getAppUsers$ = this.http.get<AppUser[]>(this.appUsersUrl)
     .pipe(
@@ -226,11 +248,22 @@ export class UiService {
         },
         error: () => this.openSnackBar('This Email is already registered, please sign in', 'Close'),
     })
-
+  }
+  addProduct(newProduct: ProductDTO): void {
+    this.http
+      .post<ProductDTO>('http://localhost:8080/products', newProduct)
+      .pipe(take(1))
+      .subscribe({
+        next: () => this.openSnackBar('Product Added', 'Close'),
+        error: () => this.openSnackBar('Something went wrong when adding a new Product', 'Close'),
+    })
   }
 
   public whenCategoryUpdates(): Observable<Category[]>{
     return this.categories$.asObservable();
+  }
+  public whenSalesUpdates(): Observable<Sale[]>{
+    return this.sales$.asObservable();
   }
 
   public whenAppUsersUpdates(): Observable<AppUser[]>{
@@ -256,6 +289,18 @@ export class UiService {
       error: () => this.openSnackBar('Your account coudn\'t be updated, please try again later', 'Close'),
     })
   }
+  public editProduct(updatedProduct: ProductDTO): void {
+    this.http
+      .put<ProductDTO>(`http://localhost:8080/products/${updatedProduct.id}`, updatedProduct)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.getProducts()
+          this.openSnackBar('Product Updated Successfully', 'Close')
+        },
+        error: () => this.openSnackBar('Something went wrong during product edit', 'Close'),
+      })
+  }
 
   // DELETE requests
   public deleteAppUser(id: number): void {
@@ -265,5 +310,16 @@ export class UiService {
       next: ()=> this.loadUsers(),
       error: () => this.onError('Something went wrong when Deleting a user!')
     })
+  }
+  public deleteProduct(productId: number): void {
+    this.http
+      .delete<Product>(`http://localhost:8080/products/${productId}`)
+      .subscribe({
+          next: () => {
+            this.getProducts()
+            this.openSnackBar('Product Deleted', 'Close')
+          },
+          error: () => this.openSnackBar('Product was not removed', 'Close')
+      });
   }
 }

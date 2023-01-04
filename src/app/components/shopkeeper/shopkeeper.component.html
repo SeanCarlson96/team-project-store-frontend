@@ -1,9 +1,9 @@
 
 <div class="button-tabs">
-    <button mat-raised-button color="basic" (click)="changeTab(1)">Products</button>
-    <button mat-raised-button color="basic" (click)="changeTab(2)">Categories</button>
-    <button mat-raised-button color="basic" (click)="changeTab(3)">Coupons</button>
-    <button mat-raised-button color="basic" (click)="changeTab(4)">Sales</button>
+    <button mat-raised-button [color]="this.tab === 1 ? 'primary' : 'basic'" (click)="changeTab(1)">Products</button>
+    <button mat-raised-button [color]="this.tab === 2 ? 'primary' : 'basic'" (click)="changeTab(2)">Categories</button>
+    <button mat-raised-button [color]="this.tab === 3 ? 'primary' : 'basic'" (click)="changeTab(3)">Coupons</button>
+    <button mat-raised-button [color]="this.tab === 4 ? 'primary' : 'basic'" (click)="changeTab(4)">Sales</button>
 </div>
 
 <app-shopkeeper-products *ngIf="this.tab === 1"></app-shopkeeper-products>

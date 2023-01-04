@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {MatSelectModule} from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
-import {MatTableModule} from '@angular/material/table';
 
 
 import { AppComponent } from './app.component';
@@ -33,6 +32,12 @@ import { ShopkeeperProductsComponent } from './components/shopkeeper-products/sh
 import { ShopkeeperCategoriesComponent } from './components/shopkeeper-categories/shopkeeper-categories.component';
 import { ShopkeeperCouponsComponent } from './components/shopkeeper-coupons/shopkeeper-coupons.component';
 import { ShopkeeperSalesComponent } from './components/shopkeeper-sales/shopkeeper-sales.component';
+import {MatTableModule} from '@angular/material/table';
+import { AddNewProductComponent } from './components/add-new-product/add-new-product.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { EditProductComponent } from './components/edit-product/edit-product.component';
 
 
 
@@ -52,7 +57,10 @@ import { ShopkeeperSalesComponent } from './components/shopkeeper-sales/shopkeep
     ShopkeeperProductsComponent,
     ShopkeeperCategoriesComponent,
     ShopkeeperCouponsComponent,
-    ShopkeeperSalesComponent
+    ShopkeeperSalesComponent,
+    AddNewProductComponent,
+    ShopkeeperSalesComponent,
+    EditProductComponent
   ],
   imports: [
     BrowserModule,
@@ -71,7 +79,10 @@ import { ShopkeeperSalesComponent } from './components/shopkeeper-sales/shopkeep
     MatRadioModule,
     MatBadgeModule,
     ReactiveFormsModule,
-    MatTableModule
+    MatTableModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]
