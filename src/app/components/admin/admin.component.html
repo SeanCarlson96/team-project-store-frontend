@@ -1,4 +1,50 @@
 <h1>Welcome Admin</h1>
+<mat-accordion>
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+            Click to edit or view your acccount.
+        </mat-panel-title>
+        <mat-panel-description>
+            <mat-icon>account_circle</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <!-- Inner Panel -->
+      <div class="edit-admin">
+        <div class="admin-container" *ngIf="appUsers$ | async as adminUser">
+            <div class="admin-wrapper" *ngFor="let admin of adminUser">
+                <p> <strong>ROLE:</strong> {{admin.userType}}</p>
+                <p> <strong>EMAIL:</strong> {{admin.email}}</p>
+                <p> <strong>PASSWORD:</strong> {{admin.password}}</p>
+                <p>Update your credentials</p>
+                <!-- email -->
+                <mat-form-field class="example-full-width">
+                    <mat-label>Email</mat-label>
+                    <input matInput placeholder="Update email" [(ngModel)]="adminEmail" name="email" type="email" value="admin.email">
+                    <button *ngIf="uEmail" matSuffix mat-icon-button aria-label="Clear" (click)="uEmail=''">
+                        <mat-icon color="warn">close</mat-icon>
+                      </button>
+                </mat-form-field>
+                <!-- password -->
+                <mat-form-field class="example-full-width">
+                    <mat-label>password</mat-label>
+                    <input matInput placeholder="Update password" type="password" [(ngModel)]="adminPassword" name="password">
+                    <button *ngIf="uPassword" matSuffix mat-icon-button aria-label="Clear" (click)="uPassword=''">
+                        <mat-icon color="warn">close</mat-icon>
+                      </button>
+                </mat-form-field>
+                <!-- <input type="email" name="email" [(ngModel)]="adminEmail" placeholder="update email"> -->
+                <!-- <input type="password" name="password" [(ngModel)]="adminPassword" placeholder="update password"> -->
+                <button mat-stroked-button color="warn" (click)="ui.editCustomer(admin, adminEmail, adminPassword)" (click)="onAdminClick(adminEmail, adminPassword)">Submit</button>
+            </div>
+        </div>
+    </div>
+    </mat-expansion-panel>
+    <!-- Inner Pannel -->
+    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+    </mat-expansion-panel>
+    </mat-accordion>
+
 <!-- Create User -->
 <div class="subtitle">
     <h5>Create User</h5>
@@ -41,37 +87,41 @@
     <!-- delete Column -->
     <ng-container matColumnDef="delete">
         <th mat-header-cell *matHeaderCellDef> Delete </th>
-        <td mat-cell *matCellDef="let element" class="deleteIcon" (click)="ui.deleteAppUser(element.id)"> <mat-icon color="accent">delete_forever</mat-icon> </td>
+        <td mat-cell *matCellDef="let user" class="deleteIcon" (click)="ui.deleteAppUser(user.id)"> <mat-icon color="accent">delete_forever</mat-icon> </td>
       </ng-container>
 
     <!-- id Column -->
     <ng-container matColumnDef="id" hidden>
         <th mat-header-cell *matHeaderCellDef hidden> ID </th>
-        <td mat-cell *matCellDef="let element" hidden> {{element.id}} </td>
+        <td mat-cell *matCellDef="let user" hidden> {{user.id}} </td>
       </ng-container>
 
     <!-- role Column -->
     <ng-container matColumnDef="role">
       <th mat-header-cell *matHeaderCellDef> Role </th>
-      <td mat-cell *matCellDef="let element"> {{element.userType}} </td>
+      <td mat-cell *matCellDef="let user"> {{user.userType}} </td>
     </ng-container>
   
     <!-- email Column -->
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef> Email </th>
-      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+      <td mat-cell *matCellDef="let user"> {{user.email}} </td>
     </ng-container>
   
     <!-- password Column -->
     <ng-container matColumnDef="password">
       <th mat-header-cell *matHeaderCellDef> password </th>
-      <td mat-cell *matCellDef="let element"> {{element.password}} </td>
+      <td mat-cell *matCellDef="let user"> {{user.password}} </td>
     </ng-container>
   
     <!-- Edit/PUT Column -->
-    <ng-container matColumnDef="save">
-      <th mat-header-cell *matHeaderCellDef> Save </th>
-      <td mat-cell *matCellDef="let element" class="editIcon" (click)="onEdit()"> <button class="save-btn">EDIT</button> </td>
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef> Edit </th>
+      <td mat-cell *matCellDef="let user" class="editIcon" >
+        <button class="save-btn" (click)="openDialog(user)">
+            <mat-icon>edit</mat-icon>
+        </button> 
+        </td>
     </ng-container>
   
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

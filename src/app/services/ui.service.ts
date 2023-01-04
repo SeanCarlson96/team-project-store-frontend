@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppUser } from 'src/data/User';
-import { catchError, Observable, of, pipe, Subject, take, tap, throwError} from 'rxjs';
+import { catchError, map, Observable, of, pipe, Subject, take, tap, throwError} from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PageName } from '../enums/PageEnum';
 import { Product } from 'src/data/Product';
@@ -17,6 +17,7 @@ export class UiService {
   private newUser = {} as AppUser
   categories: Category[] = [];
   appUsers: AppUser[] = [];
+  numberUsers: number = 0;
   categories$: Subject<Category[]> = new Subject();
   appUsers$: Subject<AppUser[]> = new Subject();
   public selectedProduct = {} as Product
@@ -155,10 +156,9 @@ export class UiService {
     this.http.get<AppUser[]>(this.appUsersUrl)
     .pipe(
       take(1),
-      // tap(data => console.log(JSON.stringify(data)))
+      tap(data => console.log(JSON.stringify(data)))
       ).subscribe({
         next: users =>{
-          console.log('inside of loadUser()',users)
           this.appUsers = users;
           this.appUsers$.next(users);
         },
@@ -186,11 +186,11 @@ export class UiService {
   getAppUsers$ = this.http.get<AppUser[]>(this.appUsersUrl)
     .pipe(
       take(1),
-      // tap(data => console.log(JSON.stringify(data))),
+      map((data: AppUser[]) => data.filter((user: AppUser) => user.userType === 'admin')),
       catchError((err) => of(err))
     );
 
- 
+
   // POST requests
   addAppUser(suEmail: string, suPassword: string, userType: string): void {
     this.newUser = {
@@ -241,6 +241,19 @@ export class UiService {
       error: () => this.openSnackBar('Your account coudn\'t be updated, please try again later', 'Close'),
     })
   }
+
+  public updateUser(id: number, user:AppUser): void {
+    this.http.put<AppUser>(`http://localhost:8080/appusers/${id}`, user)
+    .pipe(take(1))
+    .subscribe({
+      next: () => {
+        this.getUsers();
+        this.openSnackBar('Updated Successfully', 'Close')
+      },
+      error: () => this.openSnackBar('Your account coudn\'t be updated, please try again later', 'Close'),
+    })
+  }
+
 
   // DELETE requests
   public deleteAppUser(id: number): void {

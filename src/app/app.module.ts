@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import {MatSelectModule} from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import {MatTableModule} from '@angular/material/table';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 
 import { AppComponent } from './app.component';
@@ -33,6 +35,7 @@ import { ShopkeeperProductsComponent } from './components/shopkeeper-products/sh
 import { ShopkeeperCategoriesComponent } from './components/shopkeeper-categories/shopkeeper-categories.component';
 import { ShopkeeperCouponsComponent } from './components/shopkeeper-coupons/shopkeeper-coupons.component';
 import { ShopkeeperSalesComponent } from './components/shopkeeper-sales/shopkeeper-sales.component';
+import { AdminEditUserComponent } from './components/admin-edit-user/admin-edit-user.component';
 
 
 
@@ -52,7 +55,8 @@ import { ShopkeeperSalesComponent } from './components/shopkeeper-sales/shopkeep
     ShopkeeperProductsComponent,
     ShopkeeperCategoriesComponent,
     ShopkeeperCouponsComponent,
-    ShopkeeperSalesComponent
+    ShopkeeperSalesComponent,
+    AdminEditUserComponent
   ],
   imports: [
     BrowserModule,
@@ -71,7 +75,9 @@ import { ShopkeeperSalesComponent } from './components/shopkeeper-sales/shopkeep
     MatRadioModule,
     MatBadgeModule,
     ReactiveFormsModule,
-    MatTableModule
+    MatTableModule,
+    MatDialogModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]
