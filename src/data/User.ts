@@ -6,8 +6,6 @@ export interface AppUser {
     email: string
     password: string
     userType: string
-
     carts: Cart[]
-
     coupons: Coupon[]
 }
