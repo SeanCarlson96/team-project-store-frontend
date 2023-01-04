@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppUser } from 'src/data/User';
-import { catchError, Observable, pipe, Subject, take, throwError} from 'rxjs';
+import { catchError, Observable, of, pipe, Subject, take, tap, throwError} from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PageName } from '../enums/PageEnum';
 import { Product } from 'src/data/Product';
@@ -16,11 +16,14 @@ export class UiService {
   //public pageIndex: number = PageName.HOME
   private newUser = {} as AppUser
   categories: Category[] = [];
+  appUsers: AppUser[] = [];
   categories$: Subject<Category[]> = new Subject();
+  appUsers$: Subject<AppUser[]> = new Subject();
   public selectedProduct = {} as Product
   public products: Product[] = []
 
   private categoryUrl = 'http://localhost:8080/categories';
+  private appUsersUrl = 'http://localhost:8080/appusers';
 
    // Dummy data for product cards
   // public product1: Product = {
@@ -48,6 +51,7 @@ export class UiService {
 
   constructor(private http: HttpClient, private _snackBar: MatSnackBar) {
     this.getCategories();
+    this.getUsers();
     localStorage.getItem("page") !== null ? this.pageName = +!localStorage.getItem("page") : this.pageName = PageName.HOME;
     
     // storing email and password so refresh won't return to home
@@ -64,6 +68,11 @@ export class UiService {
   public getCategories(): Category[]{
     this.loadCategories();
     return this.categories;
+  }
+
+  public getUsers(): AppUser[]{
+    this.loadUsers();
+    return this.appUsers;
   }
   
   public getProductById(id: number | undefined): void {
@@ -120,6 +129,12 @@ export class UiService {
     this._snackBar.open(message, action);
   }
 
+  public onError(msg: string): void {
+    this._snackBar.open(msg, undefined, {
+      duration: 3000
+    })
+  }
+
   // added to save user info in local storage
   public validLogin(appUser: AppUser): void {
     localStorage.setItem('email', appUser.email);
@@ -136,6 +151,7 @@ export class UiService {
     this.currentUser = {} as AppUser;
   }
 
+  // GET requests
   getAppUser(liEmail: string, liPassword: string): void {
     this.http
       .get<AppUser>(`http://localhost:8080/appusers?email=${liEmail}&password=${liPassword}`)
@@ -150,6 +166,24 @@ export class UiService {
     })
   }
 
+  public loadUsers(): void{
+    this.http.get<AppUser[]>(this.appUsersUrl)
+    .pipe(
+      take(1),
+      // tap(data => console.log(JSON.stringify(data)))
+      ).subscribe({
+        next: users =>{
+          console.log('inside of loadUser()',users)
+          this.appUsers = users;
+          this.appUsers$.next(users);
+        },
+        error: err => {
+          console.error(err)
+          this.onError('Problem getting users')
+        }
+      })
+  }
+
   public loadCategories(): void{
     this.http.get<Category[]>(this.categoryUrl)
     .pipe(
@@ -157,14 +191,20 @@ export class UiService {
       catchError(err => {throw 'error source:' +err})
       ).subscribe({
         next: category =>{
-          console.log(category)
           this.categories = category;
           this.categories$.next(category);
         },
         error: err => console.error(err)
       })
-    
   }
+
+  getAppUsers$ = this.http.get<AppUser[]>(this.appUsersUrl)
+    .pipe(
+      take(1),
+      // tap(data => console.log(JSON.stringify(data))),
+      catchError((err) => of(err))
+    );
+
  
   // POST requests
   addAppUser(suEmail: string, suPassword: string, userType: string): void {
@@ -180,7 +220,10 @@ export class UiService {
       .post<AppUser>('http://localhost:8080/appusers', this.newUser)
       .pipe(take(1))
       .subscribe({
-        next: () => this.openSnackBar('Registered Successfully', 'Close'),
+        next: () => {
+          this.openSnackBar('Registered Successfully', 'Close')
+          this.loadUsers();
+        },
         error: () => this.openSnackBar('This Email is already registered, please sign in', 'Close'),
     })
 
@@ -188,6 +231,10 @@ export class UiService {
 
   public whenCategoryUpdates(): Observable<Category[]>{
     return this.categories$.asObservable();
+  }
+
+  public whenAppUsersUpdates(): Observable<AppUser[]>{
+    return this.appUsers$.asObservable();
   }
 
   // PUT requests
@@ -207,6 +254,16 @@ export class UiService {
         this.openSnackBar('Updated Successfully', 'Close')
       },
       error: () => this.openSnackBar('Your account coudn\'t be updated, please try again later', 'Close'),
+    })
+  }
+
+  // DELETE requests
+  public deleteAppUser(id: number): void {
+    this.http.delete<AppUser>(`${this.appUsersUrl}/${id}`)
+    .pipe(take(1))
+    .subscribe({
+      next: ()=> this.loadUsers(),
+      error: () => this.onError('Something went wrong when Deleting a user!')
     })
   }
 }
