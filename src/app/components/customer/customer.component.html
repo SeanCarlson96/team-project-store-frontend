@@ -16,8 +16,11 @@
 </mat-card>
 </form>
 
-<mat-card class="cart-card">
+<mat-card class="cart-card" >
     <mat-card-title>Order History</mat-card-title>
-    <mat-card-content>INSERT ORDER STUFF HERE{{ui.currentUser.carts}}</mat-card-content>
+    <mat-card-content *ngFor="let cart of ui.currentUser.carts">
+        {{cart.id}}
+        {{cart.purchaseDate | date}}
+    </mat-card-content>
 </mat-card>
 </div>
