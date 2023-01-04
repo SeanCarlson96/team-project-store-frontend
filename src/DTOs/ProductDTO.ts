@@ -5,7 +5,7 @@ export interface ProductDTO {
     id: number | null
     productName: string
     price: number
-    saleId: SaleDTO
+    saleId: number
     categories: CategoryDTO[]
     description: string
     discontinued: boolean
