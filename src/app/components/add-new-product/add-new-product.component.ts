@@ -31,6 +31,7 @@ export class AddNewProductComponent implements OnInit {
   }
 
   createProduct(): void {
+    console.log(this.newProductCategories)
     this.newProduct = {
       id: null,
       productName: this.newProductProductName,

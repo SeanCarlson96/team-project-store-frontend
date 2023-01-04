@@ -8,11 +8,12 @@ import { Product } from 'src/data/Product';
 import { Category } from 'src/data/Category';
 import { Sale } from 'src/data/Sale';
 import { ProductDTO } from 'src/DTOs/ProductDTO';
+import { CategoryDTO } from 'src/DTOs/CategoryDTO';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UiService {  
+export class UiService {
   public currentUser = {} as AppUser
   public pageName: number = PageName.HOME
   //public pageIndex: number = PageName.HOME
@@ -23,10 +24,12 @@ export class UiService {
   sales$: Subject<Sale[]> = new Subject();
   categories$: Subject<Category[]> = new Subject();
   appUsers$: Subject<AppUser[]> = new Subject();
+  selectedProduct$: Subject<Product> = new Subject();
   private productsSubject: Subject<Product[]> = new Subject()
   public selectedProduct = {} as Product
   public products: Product[] = []
   public productIdToEdit: number = 0
+  public categoryIdToEdit: number = 0
 
   private categoryUrl = 'http://localhost:8080/categories';
   private appUsersUrl = 'http://localhost:8080/appusers';
@@ -99,11 +102,12 @@ export class UiService {
 
   
   public getProductById(id: number | undefined): void {
-    this.http.get<Product>(`http://localhost:8080/products?id=${id}`)
+    this.http.get<Product>(`http://localhost:8080/products/${id}`)
       .pipe(take(1))
       .subscribe({ 
         next: product => {
         this.selectedProduct = product
+        this.selectedProduct$.next(this.selectedProduct)
         console.log(this.selectedProduct)
       },
       error: () => this.openSnackBar('Problem getting product', 'Close')
@@ -258,6 +262,15 @@ export class UiService {
         error: () => this.openSnackBar('Something went wrong when adding a new Product', 'Close'),
     })
   }
+  addCategory(newCategoryDTO: CategoryDTO) {
+    this.http
+      .post<CategoryDTO>('http://localhost:8080/categories', newCategoryDTO)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {this.loadCategories(); this.openSnackBar('Category Added', 'Close')},
+        error: () => this.openSnackBar('Something went wrong when adding a new Category', 'Close'),
+    })
+  }  
 
   public whenCategoryUpdates(): Observable<Category[]>{
     return this.categories$.asObservable();
@@ -268,6 +281,9 @@ export class UiService {
 
   public whenAppUsersUpdates(): Observable<AppUser[]>{
     return this.appUsers$.asObservable();
+  }
+  public whenSelectedProductUpdates(): Observable<Product>{
+    return this.selectedProduct$.asObservable();
   }
 
   // PUT requests
@@ -301,6 +317,18 @@ export class UiService {
         error: () => this.openSnackBar('Something went wrong during product edit', 'Close'),
       })
   }
+  public editCategory(updatedCategory: CategoryDTO): void {
+    this.http
+      .put<CategoryDTO>(`http://localhost:8080/categories?id=${updatedCategory.id}`, updatedCategory)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.getCategories()
+          this.openSnackBar('Category Updated Successfully', 'Close')
+        },
+        error: () => this.openSnackBar('Something went wrong during category edit', 'Close'),
+      })
+  }
 
   // DELETE requests
   public deleteAppUser(id: number): void {
@@ -321,5 +349,16 @@ export class UiService {
           },
           error: () => this.openSnackBar('Product was not removed', 'Close')
       });
+  }
+  public deleteCategory(id: number): void {
+    this.http.delete<Category>(`http://localhost:8080/categories/${id}`)
+    .pipe(take(1))
+    .subscribe({
+      next: ()=> {
+        this.loadCategories()
+        this.openSnackBar('Category Deleted', 'Close')
+      },
+      error: () => this.onError('Something went wrong when Deleting a user!')
+    })
   }
 }
