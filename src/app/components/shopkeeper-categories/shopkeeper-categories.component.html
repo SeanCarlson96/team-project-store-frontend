@@ -1,1 +1,68 @@
-<p>shopkeeper-categories works!</p>
+<div class="add-btn" *ngIf="editCategoryId < 0">
+  <button mat-flat-button color="accent" *ngIf="newCategory===false" (click)="newCategory = true">Add New</button>
+  <button mat-flat-button color="accent" *ngIf="newCategory===true"
+  (click)="newCategory = false; ui.getCategories();">Categories Table</button>
+</div>
+<div class="add-btn" *ngIf="editCategoryId > -1">
+    <button mat-flat-button color="accent" *ngIf="newCategory===false"
+    (click)="newCategory = false; edit = false; editCategoryId = -1">Categories Table</button>
+</div>
+
+<!-- Categories Table -->
+<div class="table-container" *ngIf="edit===false && newCategory===false">
+  <table mat-table [dataSource]="this.dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="Delete">
+        <th mat-header-cell *matHeaderCellDef> Delete </th>
+        <td mat-cell *matCellDef="let element" (click)="ui.deleteCategory(element.id)">
+        <mat-icon color="accent">delete_forever</mat-icon></td>
+      </ng-container>
+
+      <ng-container matColumnDef="Edit">
+        <th mat-header-cell *matHeaderCellDef> Edit </th>
+        <td mat-cell *matCellDef="let element" (click)="openEditCategory(element.id)"><mat-icon>edit</mat-icon></td>
+      </ng-container>
+    
+      <ng-container matColumnDef="categoryName">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.categoryName}} </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+</div>
+
+<!-- Add Category -->
+<div class="table-container" *ngIf="newCategory===true">
+  <h3 style="margin-left: 5vw;">Add Category</h3><br/>
+  <div class="container">
+        <mat-form-field appearance="fill">
+            <mat-label>Category Name</mat-label>
+            <input name="newCategoryCategoryName" matInput
+            [(ngModel)]="newCategoryCategoryName" required />
+        </mat-form-field>
+        
+        <button mat-icon-button type="submit" color="accent" (click)="addNewCategory()">
+          <mat-icon>add_box</mat-icon>
+          Add Category
+      </button>
+    </div>
+</div>
+
+<!-- Edit Category -->
+<div class="table-container" *ngIf="edit===true">
+  <h3 style="margin-left: 5vw;">Edit Category</h3><br/>
+  <div class="container">
+        <mat-form-field appearance="fill">
+            <mat-label>Category Name</mat-label>
+            <input name="newCategoryCategoryName" matInput
+            [(ngModel)]="newCategoryCategoryName" required />
+        </mat-form-field>
+        
+        <button mat-icon-button type="submit" color="accent" (click)="updateCategory()">
+          <mat-icon>edit</mat-icon>
+          Update Category
+      </button>
+    </div>
+</div>

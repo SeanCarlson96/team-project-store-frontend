@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { UiService } from 'src/app/services/ui.service';
 import { CategoryDTO } from 'src/DTOs/CategoryDTO';
 import { ProductDTO } from 'src/DTOs/ProductDTO';
@@ -13,35 +14,37 @@ export class EditProductComponent implements OnInit {
   public productToEdit = {} as ProductDTO
   public updatedProduct = {} as ProductDTO
   editProductId: number
-  editProductProductName: string
-  editProductPrice: number
+  editProductProductName: string = ''
+  editProductPrice: number = 0
   editProductSaleId: number | undefined
-  editProductCategories: CategoryDTO[]
-  editProductDescription: string
-  editProductDiscontinued: boolean
-  editProductImage: string
-  editProductAvailableDate: Date
-  editProductQuantity: number
-  editProductMinAdPrice: number
+  editProductCategories: CategoryDTO[] = []
+  editProductDescription: string = ''
+  editProductDiscontinued: boolean = false
+  editProductImage: string = ''
+  editProductAvailableDate: Date = new Date
+  editProductQuantity: number = 0
+  editProductMinAdPrice: number = 0
+  private selectedProductSubscription: Subscription
 
   constructor(public ui: UiService) { 
     this.editProductId = this.ui.productIdToEdit
     //get product
     this.ui.getProductById(this.ui.productIdToEdit) //sets ui.selectedProduct to a Product type
-    console.log(this.ui.selectedProduct)
     //set ngmodel variables to that product's information
-    this.editProductId = this.ui.selectedProduct.id
-    this.editProductProductName = this.ui.selectedProduct.productName
-    this.editProductPrice = this.ui.selectedProduct.price
-    this.editProductSaleId = this.ui.selectedProduct.sale?.id
-    this.editProductCategories = [] //this.ui.selectedProduct.categories
-    this.editProductDescription = this.ui.selectedProduct.description
-    this.editProductDiscontinued = this.ui.selectedProduct.discontinued
-    this.editProductImage = this.ui.selectedProduct.image
-    this.editProductAvailableDate = this.ui.selectedProduct.availableDate
-    this.editProductQuantity = this.ui.selectedProduct.quantity
-    this.editProductMinAdPrice = this.ui.selectedProduct.minAdPrice
-    console.log(this.editProductProductName)
+    this.selectedProductSubscription = ui.whenSelectedProductUpdates().subscribe(product => {
+        this.editProductId = product.id
+        this.editProductProductName = product.productName
+        this.editProductPrice = product.price
+        this.editProductSaleId = product.sale?.id
+        this.editProductCategories = []//product.categories
+        this.editProductDescription = product.description
+        this.editProductDiscontinued = product.discontinued
+        this.editProductImage = product.image
+        this.editProductAvailableDate = product.availableDate
+        this.editProductQuantity = product.quantity
+        this.editProductMinAdPrice = product.minAdPrice
+    })
+    
   }
 
   ngOnInit(): void {
