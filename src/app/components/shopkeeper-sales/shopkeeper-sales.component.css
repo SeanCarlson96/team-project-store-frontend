@@ -1,0 +1,24 @@
+.add-btn {
+    margin-left: 5vw;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.table-container {
+    margin-top: 10px;
+    margin-left: 5vw;
+}
+table {
+    width: 80vw;
+}
+.mat-column-productName {
+    flex: 0 0 90%;
+}
+.mat-column-Delete {
+    width: 80px;
+}
+.mat-column-Edit {
+    width: 80px;
+}
+.mat-icon {
+    cursor: pointer;
+}
