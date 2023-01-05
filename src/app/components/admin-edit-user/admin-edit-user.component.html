@@ -1,0 +1,33 @@
+<h1 mat-dialog-title>Edit Account</h1>
+<div mat-dialog-content>
+  <div class="edit-container">
+    <div class="email-container">
+      <mat-form-field class="example-full-width">
+        <mat-label>New Email</mat-label>
+        <input matInput [(ngModel)]="email" type="email" required="true">
+      </mat-form-field>
+    </div>
+
+    <div class="password-container">
+      <mat-form-field class="example-full-width">
+        <mat-label>New Password</mat-label>
+        <input matInput [(ngModel)]="password" type="password" required="true">
+      </mat-form-field>
+    </div>
+
+    <div class="type-container">
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="userType">
+            <div class="type-wrapper">
+                <mat-radio-button value="customer" name="type">customer</mat-radio-button>
+                <mat-radio-button value="shopkeeper" name="type" >shopkeeper</mat-radio-button>
+            </div>
+        </mat-radio-group>
+    </div>
+
+  </div>
+  
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close (click)="onCancelClick()">Cancel</button>
+  <button mat-button mat-dialog-close cdkFocusInitial (click)="dialogValues()">Confirm</button>
+</div>
