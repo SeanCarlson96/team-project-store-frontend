@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PageName } from 'src/app/enums/PageEnum';
 import { UiService } from 'src/app/services/ui.service';
 
 @Component({
@@ -8,6 +9,7 @@ import { UiService } from 'src/app/services/ui.service';
 })
 export class SignupComponent implements OnInit {
   private ui: UiService;
+  public PageName = PageName;
   public suEmail: string = ''
   public suPassword: string = ''
   public userType: string = ''
@@ -26,5 +28,9 @@ export class SignupComponent implements OnInit {
     this.suEmail = suEmail
     this.suPassword = suPassword
     this.ui.addAppUser(this.suEmail, this.suPassword, this.newUserType)
+  }
+
+  onLogin(): void {
+    this.ui.changePage(PageName.LOGIN)
   }
 }

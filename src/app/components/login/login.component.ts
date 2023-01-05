@@ -11,8 +11,6 @@ export class LoginComponent implements OnInit {
   public ui: UiService;  
   public liEmail: string = ''
   public liPassword: string = ''
-
-  // needed change to product page
   public PageName = PageName;
 
 
@@ -24,7 +22,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSignUp() {
-    throw new Error('Method not implemented.')
+    this.ui.changePage(PageName.SIGNUP)
   }
   onLogIn(liEmail: string, liPassword: string) {
     this.liEmail = liEmail
