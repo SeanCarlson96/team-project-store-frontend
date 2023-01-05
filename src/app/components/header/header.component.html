@@ -20,8 +20,8 @@
       <span class="loggedIn-spacer"></span>
       <span>Welcome!</span>
       <span class="loggedIn-spacer"></span>
-      <button mat-icon-button>
-        <mat-icon matBadge="0" matBadgeColor="accent">shopping_cart</mat-icon>
+      <button mat-icon-button (click)="ui.changePage(PageName.CART)">
+        <mat-icon >shopping_cart</mat-icon>
       </button>
       <button mat-icon-button (click)="[ui.logout(), ui.changePage(PageName.HOME)]">
         Logout
