@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppUser } from 'src/data/User';
-import { catchError, Observable, of, pipe, Subject, take, tap, throwError} from 'rxjs';
+import { catchError, map, Observable, of, pipe, Subject, take, tap, throwError} from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PageName } from '../enums/PageEnum';
 import { Product } from 'src/data/Product';
@@ -9,6 +9,7 @@ import { Category } from 'src/data/Category';
 import { Sale } from 'src/data/Sale';
 import { ProductDTO } from 'src/DTOs/ProductDTO';
 import { CategoryDTO } from 'src/DTOs/CategoryDTO';
+import { Coupon } from 'src/data/Coupon';
 import { CartDTO } from 'src/DTOs/CartDTO';
 import { ProductInCartDTO } from 'src/DTOs/ProductInCartDTO';
 
@@ -23,10 +24,12 @@ export class UiService {
   categories: Category[] = [];
   appUsers: AppUser[] = [];
   sales: Sale[] = [];
+  coupons: Coupon[] = [];
   sales$: Subject<Sale[]> = new Subject();
   categories$: Subject<Category[]> = new Subject();
   appUsers$: Subject<AppUser[]> = new Subject();
   selectedProduct$: Subject<Product> = new Subject();
+  coupons$: Subject<Coupon[]> = new Subject();
   private productsSubject: Subject<Product[]> = new Subject()
   public selectedProduct = {} as Product
   public products: Product[] = []
@@ -37,6 +40,7 @@ export class UiService {
 
   private categoryUrl = 'http://localhost:8080/categories';
   private appUsersUrl = 'http://localhost:8080/appusers';
+  private couponUrl = 'http://localhost:8080/coupons';
 
    // Dummy data for product cards
   // public product1: Product = {
@@ -88,6 +92,12 @@ export class UiService {
     this.loadUsers();
     return this.appUsers;
   }
+
+  public getCoupons(): Coupon[]{
+    this.loadCoupons();
+    return this.coupons;
+  }
+
   public getProducts(){
     this.http
       .get<Product[]>('http://localhost:8080/products')
@@ -188,11 +198,9 @@ export class UiService {
   public loadUsers(): void{
     this.http.get<AppUser[]>(this.appUsersUrl)
     .pipe(
-      take(1),
-      // tap(data => console.log(JSON.stringify(data)))
+      take(1)
       ).subscribe({
         next: users =>{
-          console.log('inside of loadUser()',users)
           this.appUsers = users;
           this.appUsers$.next(users);
         },
@@ -231,11 +239,23 @@ export class UiService {
   getAppUsers$ = this.http.get<AppUser[]>(this.appUsersUrl)
     .pipe(
       take(1),
-      // tap(data => console.log(JSON.stringify(data))),
+      map((data: AppUser[]) => data.filter((user: AppUser) => user.userType === 'admin')),
       catchError((err) => of(err))
     );
 
- 
+    public loadCoupons(): void{
+      this.http.get<Coupon[]>(this.couponUrl)
+      .pipe(take(1))
+        .subscribe({
+          next: coupons => {
+            this.coupons = coupons;
+            this.coupons$.next(coupons);
+          },
+        error: () => this.openSnackBar('Issue retreiving Coupons', 'Close'),
+      })
+    }
+
+
   // POST requests
   addAppUser(suEmail: string, suPassword: string, userType: string): void {
     this.newUser = {
@@ -290,6 +310,10 @@ export class UiService {
     return this.selectedProduct$.asObservable();
   }
 
+  public whenCouponsUpdates(): Observable<Coupon[]>{
+    return this.coupons$.asObservable();
+  }
+
   // PUT requests
 
   public editCustomer(currentUser: AppUser, newEmail: string, newPassword: string): void {
@@ -333,6 +357,18 @@ export class UiService {
         error: () => this.openSnackBar('Something went wrong during category edit', 'Close'),
       })
   }
+  
+  public updateUser(id: number, user:AppUser): void {
+    this.http.put<AppUser>(`http://localhost:8080/appusers/${id}`, user)
+    .pipe(take(1))
+    .subscribe({
+      next: () => {
+        this.getUsers();
+        this.openSnackBar('Updated Successfully', 'Close')
+      },
+      error: () => this.openSnackBar('Your account coudn\'t be updated, please try again later', 'Close'),
+    })
+  }
 
   // DELETE requests
   public deleteAppUser(id: number): void {
@@ -366,6 +402,16 @@ export class UiService {
     })
   }
 
+  public deleteCoupon(id: number): void {
+    this.http.delete<Coupon>(`${this.couponUrl}/${id}`)
+    .pipe(take(1))
+    .subscribe({
+      next: ()=> {
+        this.loadCoupons()
+        this.openSnackBar('Coupon Deleted', 'Close')
+      },
+      error: () => this.onError('Something went wrong when Deleting a Coupon!')
+    })
   public createCart(quantity: number): void {
     const productInCart: ProductInCartDTO = {
       id: null,

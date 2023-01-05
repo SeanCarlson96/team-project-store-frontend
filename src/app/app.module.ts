@@ -3,6 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import {MatSelectModule} from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatExpansionModule} from '@angular/material/expansion';
+
+
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -38,6 +42,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { EditProductComponent } from './components/edit-product/edit-product.component';
+import { AdminEditUserComponent } from './components/admin-edit-user/admin-edit-user.component';
+
 
 
 
@@ -60,7 +66,8 @@ import { EditProductComponent } from './components/edit-product/edit-product.com
     ShopkeeperSalesComponent,
     AddNewProductComponent,
     ShopkeeperSalesComponent,
-    EditProductComponent
+    EditProductComponent,
+    AdminEditUserComponent
   ],
   imports: [
     BrowserModule,
@@ -82,7 +89,9 @@ import { EditProductComponent } from './components/edit-product/edit-product.com
     MatTableModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDialogModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]
