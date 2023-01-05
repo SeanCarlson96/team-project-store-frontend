@@ -9,6 +9,8 @@ import { Category } from 'src/data/Category';
 import { Sale } from 'src/data/Sale';
 import { ProductDTO } from 'src/DTOs/ProductDTO';
 import { CategoryDTO } from 'src/DTOs/CategoryDTO';
+import { CartDTO } from 'src/DTOs/CartDTO';
+import { ProductInCartDTO } from 'src/DTOs/ProductInCartDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +32,8 @@ export class UiService {
   public products: Product[] = []
   public productIdToEdit: number = 0
   public categoryIdToEdit: number = 0
+  public currentCart = {} as CartDTO
+
 
   private categoryUrl = 'http://localhost:8080/categories';
   private appUsersUrl = 'http://localhost:8080/appusers';
@@ -360,5 +364,29 @@ export class UiService {
       },
       error: () => this.onError('Something went wrong when Deleting a user!')
     })
+  }
+
+  public createCart(quantity: number): void {
+    const productInCart: ProductInCartDTO = {
+      id: null,
+      productId: this.selectedProduct.id,
+      quantity: quantity
+    }
+    const newCart: CartDTO = {
+      id: null,
+      purchaseDate: null,
+      products: [productInCart]
+    }
+    
+    this.http.post<CartDTO>('http://localhost:8080/carts', newCart)
+      .pipe(take(1))
+      .subscribe({
+        next: cart => {this.currentCart = cart
+        console.log(newCart)
+        console.log(productInCart)
+        console.log("hello" + this.currentCart)
+      },
+      error: () => this.openSnackBar('Error creating cart', 'Close')
+      })
   }
 }

@@ -1,8 +1,8 @@
 import {ProductDTO} from "./ProductDTO";
-import { ProductInCart } from "./ProductInCartDTO";
+import { ProductInCartDTO } from "./ProductInCartDTO";
 
 export interface CartDTO {
     id: number | null
-    purchaseDate: Date
-    products: ProductInCart[]
+    purchaseDate: Date | null
+    products: ProductInCartDTO[]
 }
