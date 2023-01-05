@@ -1,5 +1,4 @@
-<mat-toolbar  color="primary">
-  <!-- make check userType and display page -->
+<mat-toolbar  color="primary">  
   <button mat-icon-button 
   (click)="ui.currentUser.userType === 'customer' ? ui.changePage(PageName.HOME) 
             : ui.changePage(PageName.SHOPKEEPERPAGE)">
@@ -20,13 +19,12 @@
       <span class="loggedIn-spacer"></span>
       <span>Welcome!</span>
       <span class="loggedIn-spacer"></span>
-      <button mat-icon-button>
-        <mat-icon matBadge="0" matBadgeColor="accent">shopping_cart</mat-icon>
+      <button mat-icon-button (click)="ui.changePage(PageName.CART)">
+        <mat-icon >shopping_cart</mat-icon>
       </button>
       <button mat-icon-button (click)="[ui.logout(), ui.changePage(PageName.HOME)]">
         Logout
     </button>
-    <!-- change to PageName.USER or whatever the thing is -->
     <button mat-icon-button (click)="ui.changePage(PageName.CUSTOMERPAGE)">
       Profile
     </button>
