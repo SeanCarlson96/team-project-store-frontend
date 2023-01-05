@@ -1,3 +1,4 @@
+import { ProductInCart } from "src/data/ProductsInCart";
 import {ProductDTO} from "./ProductDTO";
 import { ProductInCartDTO } from "./ProductInCartDTO";
 

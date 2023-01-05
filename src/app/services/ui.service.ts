@@ -8,10 +8,13 @@ import { Product } from 'src/data/Product';
 import { Category } from 'src/data/Category';
 import { Sale } from 'src/data/Sale';
 import { ProductDTO } from 'src/DTOs/ProductDTO';
+<<<<<<< HEAD
 import { CategoryDTO } from 'src/DTOs/CategoryDTO';
 import { Coupon } from 'src/data/Coupon';
 import { CartDTO } from 'src/DTOs/CartDTO';
 import { ProductInCartDTO } from 'src/DTOs/ProductInCartDTO';
+=======
+>>>>>>> parent of 1436a30 (started dynamic badge)
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +37,7 @@ export class UiService {
   public selectedProduct = {} as Product
   public products: Product[] = []
   public productIdToEdit: number = 0
+<<<<<<< HEAD
   public categoryIdToEdit: number = 0
   public currentCart = {} as CartDTO
 
@@ -41,6 +45,11 @@ export class UiService {
   private categoryUrl = 'http://localhost:8080/categories';
   private appUsersUrl = 'http://localhost:8080/appusers';
   private couponUrl = 'http://localhost:8080/coupons';
+=======
+
+  private categoryUrl = 'http://localhost:8080/categories';
+  private appUsersUrl = 'http://localhost:8080/appusers';
+>>>>>>> parent of 1436a30 (started dynamic badge)
 
    // Dummy data for product cards
   // public product1: Product = {
@@ -116,7 +125,7 @@ export class UiService {
 
   
   public getProductById(id: number | undefined): void {
-    this.http.get<Product>(`http://localhost:8080/products/${id}`)
+    this.http.get<Product>(`http://localhost:8080/products?id=${id}`)
       .pipe(take(1))
       .subscribe({ 
         next: product => {
