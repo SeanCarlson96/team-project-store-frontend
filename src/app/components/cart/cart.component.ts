@@ -10,7 +10,7 @@ import { CartDTO } from 'src/DTOs/CartDTO';
 })
 export class CartComponent implements OnInit {
   displayedColumns: string[] = ['delete', 'productName', 'quantity', 'pricePerItem', 'totalPrice']
-  public dataSource: CartDTO[] = []
+  public dataSource: Product[] = []
 
   constructor(public ui: UiService) { }
 

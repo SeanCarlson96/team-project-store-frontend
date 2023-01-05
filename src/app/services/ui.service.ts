@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ɵgetUnknownElementStrictMode } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppUser } from 'src/data/User';
 import { catchError, map, Observable, of, pipe, Subject, take, tap, throwError} from 'rxjs';
@@ -39,7 +39,7 @@ export class UiService {
   public productIdToEdit: number = 0
 
   public categoryIdToEdit: number = 0
-  public currentCart = {} as CartDTO
+  public currentCart = {} as Cart
 
   // user order history
   private showProductsInUserCart: ProductInCart[] = []
@@ -459,25 +459,48 @@ export class UiService {
       error: () => this.onError('Something went wrong when Deleting a Coupon!')
     })
   }
+
+  public getCurrentCart(): void {
+    this.http.get<Cart>(`http://localhost:8080/carts`)
+      .pipe(take(1))
+      .subscribe({
+        next: cart => {
+          this.currentCart = cart
+          console.log("hello" + this.currentCart)
+
+        },
+        error: () => this.openSnackBar('Problem getting cart', 'Close')
+      })
+  }
+  
+  public thisUserId: number = 0
   public createCart(quantity: number): void {
+    // if (this.currentUser.userType === undefined){
+    //   this.thisUserId = Math.floor(Math.random() * 10) + 1000;
+    // } else {
+    //   this.thisUserId = this.currentUser.id
+    // }
+    console.log(this.thisUserId)
     const productInCart: ProductInCartDTO = {
       id: null,
       productId: this.selectedProduct.id,
       quantity: quantity
     }
+     
     const newCart: CartDTO = {
       id: null,
       purchaseDate: null,
-      products: [productInCart]
+      products: [productInCart],
+      userId: null
     }
+    
     
     this.http.post<CartDTO>('http://localhost:8080/carts', newCart)
       .pipe(take(1))
       .subscribe({
-        next: cart => {this.currentCart = cart
+        next: () => {this.getCurrentCart()
         console.log(newCart)
         console.log(productInCart)
-        console.log("hello" + this.currentCart)
       },
       error: () => this.openSnackBar('Error creating cart', 'Close')
       })

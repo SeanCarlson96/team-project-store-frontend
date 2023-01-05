@@ -6,4 +6,5 @@ export interface CartDTO {
     id: number | null
     purchaseDate: Date | null
     products: ProductInCartDTO[]
+    userId: number | null
 }
