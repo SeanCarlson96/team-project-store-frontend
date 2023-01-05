@@ -412,6 +412,7 @@ export class UiService {
       },
       error: () => this.onError('Something went wrong when Deleting a Coupon!')
     })
+  }
   public createCart(quantity: number): void {
     const productInCart: ProductInCartDTO = {
       id: null,
@@ -423,6 +424,8 @@ export class UiService {
       purchaseDate: null,
       products: [productInCart]
     }
+  
+    
     
     this.http.post<CartDTO>('http://localhost:8080/carts', newCart)
       .pipe(take(1))
