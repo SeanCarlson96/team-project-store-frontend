@@ -412,6 +412,7 @@ export class UiService {
       },
       error: () => this.onError('Something went wrong when Deleting a Coupon!')
     })
+  }
   public createCart(quantity: number): void {
     const productInCart: ProductInCartDTO = {
       id: null,
