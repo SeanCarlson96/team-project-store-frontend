@@ -28,9 +28,8 @@
 
 <div *ngIf="orderClicked">
     <!-- products is productsInCart -->
-    <div *ngFor="let products of ui.cart.products">
-        
-        <h2>HMmmm: {{products.productName}}</h2>
+    <div *ngFor="let products of ui.getProductsInCustomerCart()">        
+        <h2>quantity: {{products.product.productName}}</h2>
         
     </div>
 </div>

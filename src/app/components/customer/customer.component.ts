@@ -16,7 +16,7 @@ export class CustomerComponent implements OnInit {
   constructor(public ui: UiService) { }
 
   onClick(id: number): void {
-    console.log(this.orderClicked, this.ui.getCustomerCart());
+    //console.log(this.orderClicked, this.ui.getCustomerCart());
     this.ui.getCartById(id);
     this.orderClicked = true;
 

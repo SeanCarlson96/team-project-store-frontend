@@ -13,7 +13,7 @@
 <div *ngIf="newProduct===false && editProduct < 0" class="table-container">
 
     <table mat-table [dataSource]="this.dataSource" class="mat-elevation-z8">
-      
+       
         <ng-container matColumnDef="Delete">
           <th mat-header-cell *matHeaderCellDef> Delete </th>
           <td mat-cell *matCellDef="let element" (click)="ui.deleteProduct(element.id)">
