@@ -18,9 +18,10 @@
 
 <mat-card class="cart-card" >
     <mat-card-title>Order History</mat-card-title>
-    <mat-card-content *ngFor="let cart of ui.currentUser.carts" (click)="onClick(cart.id)">       
+    <mat-card-content >       
         <!-- <span>{{cart.id}}</span> -->
-        <mat-card-subtitle>{{cart.purchaseDate | date}}</mat-card-subtitle>
+        <mat-card-subtitle *ngFor="let cart of ui.currentUser.carts" (click)="onClick(cart.id)"
+        >{{cart.purchaseDate | date}}</mat-card-subtitle>
     </mat-card-content>
 </mat-card>
 </div>
