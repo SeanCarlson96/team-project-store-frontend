@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { UiService } from 'src/app/services/ui.service';
+import { ProductInCart } from 'src/data/ProductsInCart';
 import { AppUser } from 'src/data/User';
 
 @Component({
@@ -10,18 +11,19 @@ import { AppUser } from 'src/data/User';
   styleUrls: ['./customer.component.css']
 })
 export class CustomerComponent implements OnInit {
-  
+  public displayedColumns: string[] = ['Product Name', 'Quantity'];
+  public dataSource: ProductInCart[] = []
+  public orderClicked: boolean = false;
 
   constructor(public ui: UiService) { }
 
-  onClick(id: number): void {
-    //console.log(this.orderClicked, this.ui.getCustomerCart());
-    this.ui.getCartById(id);
-    console.log(`contents ${id} clicked`);
+  onClick(id: number): void {   
+    this.ui.getCartById(id);    
     this.orderClicked = true;
+    this.dataSource = this.ui.getProductsInCustomerCart();
   }
   
-  public orderClicked: boolean = false;
+  
 
   public customerEditForm = new FormGroup ({
     email: new FormControl(),

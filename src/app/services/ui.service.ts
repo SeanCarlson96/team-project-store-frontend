@@ -436,4 +436,50 @@ export class UiService {
           error: () => this.openSnackBar('Product was not removed', 'Close')
       });
   }
+  public deleteCategory(id: number): void {
+    this.http.delete<Category>(`http://localhost:8080/categories/${id}`)
+    .pipe(take(1))
+    .subscribe({
+      next: ()=> {
+        this.loadCategories()
+        this.openSnackBar('Category Deleted', 'Close')
+      },
+      error: () => this.onError('Something went wrong when Deleting a user!')
+    })
+  }
+
+  public deleteCoupon(id: number): void {
+    this.http.delete<Coupon>(`${this.couponUrl}/${id}`)
+    .pipe(take(1))
+    .subscribe({
+      next: ()=> {
+        this.loadCoupons()
+        this.openSnackBar('Coupon Deleted', 'Close')
+      },
+      error: () => this.onError('Something went wrong when Deleting a Coupon!')
+    })
+  }
+  public createCart(quantity: number): void {
+    const productInCart: ProductInCartDTO = {
+      id: null,
+      productId: this.selectedProduct.id,
+      quantity: quantity
+    }
+    const newCart: CartDTO = {
+      id: null,
+      purchaseDate: null,
+      products: [productInCart]
+    }
+    
+    this.http.post<CartDTO>('http://localhost:8080/carts', newCart)
+      .pipe(take(1))
+      .subscribe({
+        next: cart => {this.currentCart = cart
+        console.log(newCart)
+        console.log(productInCart)
+        console.log("hello" + this.currentCart)
+      },
+      error: () => this.openSnackBar('Error creating cart', 'Close')
+      })
+  }
 }
