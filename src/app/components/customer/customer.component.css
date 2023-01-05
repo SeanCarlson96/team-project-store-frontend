@@ -17,5 +17,15 @@
   .card-container {
     display: flex;
     justify-content: space-evenly;
+    margin-top: 1rem;
   }
   
+  .table-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+
+  table {
+    width: 90%;
+  }
