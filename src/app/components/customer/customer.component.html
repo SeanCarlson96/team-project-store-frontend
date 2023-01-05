@@ -36,10 +36,14 @@
                 <th mat-header-cell *matHeaderCellDef>Quantity</th>
                 <td mat-cell *matCellDef="let element">{{element.quantity}}</td>
             </ng-container>
+            <ng-container matColumnDef="Product Price">
+                <th mat-header-cell *matHeaderCellDef>Product Price</th>
+                <td mat-cell *matCellDef="let element">{{element.product.price | currency}}</td>
+            </ng-container>
             <ng-container matColumnDef="Total">
-                <th mat-header-cell>Total</th>
+                <th mat-header-cell *matHeaderCellDef>Total</th>
                 <td mat-cell *matCellDef="let element">
-                    {{element.product.price}}
+                    {{element.product.price*element.quantity | currency}}
                 </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
