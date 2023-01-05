@@ -9,9 +9,10 @@ import { ProductInCart } from 'src/data/ProductsInCart';
   styleUrls: ['./customer.component.css']
 })
 export class CustomerComponent implements OnInit {
-  public displayedColumns: string[] = ['Product Name', 'Quantity','Product Price', 'Total'];
+  public displayedColumns: string[] = ['Product Name', 'Quantity','Product Price','Total'];
   public dataSource: ProductInCart[] = []
   public orderClicked: boolean = false;
+  
 
   constructor(public ui: UiService) { }
 
@@ -19,7 +20,11 @@ export class CustomerComponent implements OnInit {
     this.ui.getCartById(id);    
     this.orderClicked = true;
     this.dataSource = this.ui.getProductsInCustomerCart();
-  }  
+  }
+  
+  getCartCost() {
+    return this.dataSource.map(p => ((p.product.price)*(p.quantity))).reduce((acc, value) => acc + value, 0);
+  }
 
   public customerEditForm = new FormGroup ({
     email: new FormControl(),
