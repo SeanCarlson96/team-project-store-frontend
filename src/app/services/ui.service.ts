@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppUser } from 'src/data/User';
-import { catchError, map, Observable, of, Subject, take} from 'rxjs';
+import { catchError, map, Observable, of, pipe, Subject, take, tap, throwError} from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PageName } from '../enums/PageEnum';
 import { Product } from 'src/data/Product';
@@ -14,7 +14,6 @@ import { CartDTO } from 'src/DTOs/CartDTO';
 import { ProductInCartDTO } from 'src/DTOs/ProductInCartDTO';
 import { ProductInCart } from 'src/data/ProductsInCart';
 import { Cart } from 'src/data/Cart';
-import { SaleDTO } from 'src/DTOs/SaleDTO';
 
 
 @Injectable({
@@ -23,6 +22,7 @@ import { SaleDTO } from 'src/DTOs/SaleDTO';
 export class UiService {  
   public currentUser = {} as AppUser
   public pageName: number = PageName.HOME
+  //public pageIndex: number = PageName.HOME
   private newUser = {} as AppUser
   categories: Category[] = [];
   appUsers: AppUser[] = [];
@@ -37,7 +37,7 @@ export class UiService {
   public selectedProduct = {} as Product
   public products: Product[] = []
   public productIdToEdit: number = 0
-  public saleIdToEdit: number = 0
+
   public categoryIdToEdit: number = 0
   public currentCart = {} as CartDTO
 
@@ -53,7 +53,9 @@ export class UiService {
     this.getCategories();
     this.loadSales();
     this.getUsers();
-    localStorage.getItem("page") !== null ? this.pageName = +!localStorage.getItem("page") : this.pageName = PageName.HOME;    
+    localStorage.getItem("page") !== null ? this.pageName = +!localStorage.getItem("page") : this.pageName = PageName.HOME;
+    
+    // storing email and password so refresh won't return to home
     const email = localStorage.getItem('email');
     const password = localStorage.getItem('password');
     if(email !== null && password !== null){
@@ -103,9 +105,15 @@ export class UiService {
         next: product => {
         this.selectedProduct = product
         this.selectedProduct$.next(this.selectedProduct)
+        console.log(this.selectedProduct)
       },
       error: () => this.openSnackBar('Problem getting product', 'Close')
     })
+    // for(let product of this.products) {
+    //   if( id === product.id ) {
+    //     this.selectedProduct = product
+    //   }
+    // }
   }
 
   public getCartById(id: number): void {
@@ -284,15 +292,6 @@ export class UiService {
         error: () => this.openSnackBar('Something went wrong when adding a new Category', 'Close'),
     })
   }  
-  addSale(newSaleDTO: SaleDTO) {
-    this.http
-      .post<SaleDTO>('http://localhost:8080/sales', newSaleDTO)
-      .pipe(take(1))
-      .subscribe({
-        next: () => {this.loadSales(); this.openSnackBar('Sale Added', 'Close')},
-        error: () => this.openSnackBar('Something went wrong when adding a new Sale', 'Close'),
-    })
-  } 
 
   public whenCategoryUpdates(): Observable<Category[]>{
     return this.categories$.asObservable();
@@ -353,18 +352,6 @@ export class UiService {
         error: () => this.openSnackBar('Something went wrong during category edit', 'Close'),
       })
   }
-  public editSale(updatedSale: SaleDTO): void {
-    this.http
-      .put<SaleDTO>(`http://localhost:8080/sales/${updatedSale.id}`, updatedSale)
-      .pipe(take(1))
-      .subscribe({
-        next: () => {
-          this.loadSales()
-          this.openSnackBar('Sale Updated Successfully', 'Close')
-        },
-        error: () => this.openSnackBar('Something went wrong during Sale edit', 'Close'),
-      })
-  }
   
   public updateUser(id: number, user:AppUser): void {
     this.http.put<AppUser>(`http://localhost:8080/appusers/${id}`, user)
@@ -406,18 +393,7 @@ export class UiService {
         this.loadCategories()
         this.openSnackBar('Category Deleted', 'Close')
       },
-      error: () => this.onError('Something went wrong when Deleting a category!')
-    })
-  }
-  public deleteSale(id: number): void {
-    this.http.delete<Sale>(`http://localhost:8080/sales/${id}`)
-    .pipe(take(1))
-    .subscribe({
-      next: ()=> {
-        this.loadSales()
-        this.openSnackBar('Sale Deleted', 'Close')
-      },
-      error: () => this.onError('Something went wrong when Deleting a Sale!')
+      error: () => this.onError('Something went wrong when Deleting a user!')
     })
   }
 

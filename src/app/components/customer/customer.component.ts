@@ -9,7 +9,7 @@ import { ProductInCart } from 'src/data/ProductsInCart';
   styleUrls: ['./customer.component.css']
 })
 export class CustomerComponent implements OnInit {
-  public displayedColumns: string[] = ['Product Name', 'Quantity'];
+  public displayedColumns: string[] = ['Product Name', 'Quantity', 'Total'];
   public dataSource: ProductInCart[] = []
   public orderClicked: boolean = false;
 
