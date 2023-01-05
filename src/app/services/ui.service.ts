@@ -9,6 +9,7 @@ import { Category } from 'src/data/Category';
 import { Sale } from 'src/data/Sale';
 import { ProductDTO } from 'src/DTOs/ProductDTO';
 import { CategoryDTO } from 'src/DTOs/CategoryDTO';
+import { Coupon } from 'src/data/Coupon';
 
 @Injectable({
   providedIn: 'root'
@@ -21,10 +22,12 @@ export class UiService {
   categories: Category[] = [];
   appUsers: AppUser[] = [];
   sales: Sale[] = [];
+  coupons: Coupon[] = [];
   sales$: Subject<Sale[]> = new Subject();
   categories$: Subject<Category[]> = new Subject();
   appUsers$: Subject<AppUser[]> = new Subject();
   selectedProduct$: Subject<Product> = new Subject();
+  coupons$: Subject<Coupon[]> = new Subject();
   private productsSubject: Subject<Product[]> = new Subject()
   public selectedProduct = {} as Product
   public products: Product[] = []
@@ -33,6 +36,7 @@ export class UiService {
 
   private categoryUrl = 'http://localhost:8080/categories';
   private appUsersUrl = 'http://localhost:8080/appusers';
+  private couponUrl = 'http://localhost:8080/coupons';
 
    // Dummy data for product cards
   // public product1: Product = {
@@ -84,6 +88,12 @@ export class UiService {
     this.loadUsers();
     return this.appUsers;
   }
+
+  public getCoupons(): Coupon[]{
+    this.loadCoupons();
+    return this.coupons;
+  }
+
   public getProducts(){
     this.http
       .get<Product[]>('http://localhost:8080/products')
@@ -229,6 +239,18 @@ export class UiService {
       catchError((err) => of(err))
     );
 
+    public loadCoupons(): void{
+      this.http.get<Coupon[]>(this.couponUrl)
+      .pipe(take(1))
+        .subscribe({
+          next: coupons => {
+            this.coupons = coupons;
+            this.coupons$.next(coupons);
+          },
+        error: () => this.openSnackBar('Issue retreiving Coupons', 'Close'),
+      })
+    }
+
 
   // POST requests
   addAppUser(suEmail: string, suPassword: string, userType: string): void {
@@ -282,6 +304,10 @@ export class UiService {
   }
   public whenSelectedProductUpdates(): Observable<Product>{
     return this.selectedProduct$.asObservable();
+  }
+
+  public whenCouponsUpdates(): Observable<Coupon[]>{
+    return this.coupons$.asObservable();
   }
 
   // PUT requests
@@ -369,6 +395,18 @@ export class UiService {
         this.openSnackBar('Category Deleted', 'Close')
       },
       error: () => this.onError('Something went wrong when Deleting a user!')
+    })
+  }
+
+  public deleteCoupon(id: number): void {
+    this.http.delete<Coupon>(`${this.couponUrl}/${id}`)
+    .pipe(take(1))
+    .subscribe({
+      next: ()=> {
+        this.loadCoupons()
+        this.openSnackBar('Coupon Deleted', 'Close')
+      },
+      error: () => this.onError('Something went wrong when Deleting a Coupon!')
     })
   }
 }
