@@ -26,6 +26,6 @@
                 <mat-icon>remove</mat-icon>
             </button>
         </div>
-        <button (click)="ui.changePage(PageName.CART)">Add to Cart</button>
+        <button (click)="ui.changePage(PageName.CART); ui.createCart(quantityInCart)">Add to Cart</button>
    </div>
 </div>
