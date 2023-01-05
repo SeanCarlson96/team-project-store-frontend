@@ -20,22 +20,20 @@
                 <!-- email -->
                 <mat-form-field class="example-full-width">
                     <mat-label>Email</mat-label>
-                    <input matInput placeholder="Update email" [(ngModel)]="adminEmail" name="email" type="email" value="admin.email">
-                    <button *ngIf="uEmail" matSuffix mat-icon-button aria-label="Clear" (click)="uEmail=''">
+                    <input matInput placeholder="Update email" [(ngModel)]="adminEmail" name="email" type="email" value="admin.email" required="true">
+                    <button *ngIf="adminEmail" matSuffix mat-icon-button aria-label="Clear" (click)="adminEmail=''">
                         <mat-icon color="warn">close</mat-icon>
                       </button>
                 </mat-form-field>
                 <!-- password -->
                 <mat-form-field class="example-full-width">
                     <mat-label>password</mat-label>
-                    <input matInput placeholder="Update password" type="password" [(ngModel)]="adminPassword" name="password">
-                    <button *ngIf="uPassword" matSuffix mat-icon-button aria-label="Clear" (click)="uPassword=''">
+                    <input matInput placeholder="Update password" type="password" [(ngModel)]="adminPassword" name="password" required="true">
+                    <button *ngIf="adminPassword" matSuffix mat-icon-button aria-label="Clear" (click)="adminPassword=''">
                         <mat-icon color="warn">close</mat-icon>
                       </button>
                 </mat-form-field>
-                <!-- <input type="email" name="email" [(ngModel)]="adminEmail" placeholder="update email"> -->
-                <!-- <input type="password" name="password" [(ngModel)]="adminPassword" placeholder="update password"> -->
-                <button mat-stroked-button color="warn" (click)="ui.editCustomer(admin, adminEmail, adminPassword)" (click)="onAdminClick(adminEmail, adminPassword)">Submit</button>
+                <button mat-stroked-button color="warn" (click)="onAdminEdit(admin)">Submit</button>
             </div>
         </div>
     </div>
@@ -69,7 +67,6 @@
         <mat-radio-group [(ngModel)]="newUserType" aria-label="Select an option" class="radio-group" required="true">
             <mat-radio-button value="customer" name="newUserType">Customer</mat-radio-button>
             <mat-radio-button value="shopkeeper" name="newUserType">Shopkeeper</mat-radio-button>
-            <mat-radio-button value="admin" name="newUserType">Admin</mat-radio-button>
         </mat-radio-group>
     </div>
     <button mat-stroked-button color="warn" (click)="ui.addAppUser(email, password, newUserType)">Create New User</button>
@@ -87,7 +84,9 @@
     <!-- delete Column -->
     <ng-container matColumnDef="delete">
         <th mat-header-cell *matHeaderCellDef> Delete </th>
-        <td mat-cell *matCellDef="let user" class="deleteIcon" (click)="ui.deleteAppUser(user.id)"> <mat-icon color="accent">delete_forever</mat-icon> </td>
+        <td mat-cell *matCellDef="let user" class="deleteIcon" (click)="ui.deleteAppUser(user.id)">
+            <mat-icon color="accent">delete_forever</mat-icon>
+        </td>
       </ng-container>
 
     <!-- id Column -->

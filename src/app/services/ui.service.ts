@@ -184,8 +184,7 @@ export class UiService {
   public loadUsers(): void{
     this.http.get<AppUser[]>(this.appUsersUrl)
     .pipe(
-      take(1),
-      tap(data => console.log(JSON.stringify(data)))
+      take(1)
       ).subscribe({
         next: users =>{
           this.appUsers = users;

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {MatTableDataSource} from '@angular/material/table';
-import {  map, Subscription } from 'rxjs';
+import { MatTableDataSource } from '@angular/material/table';
+import { map, Subscription } from 'rxjs';
 import { UiService } from 'src/app/services/ui.service';
 import { AppUser } from 'src/data/User';
 import { MatDialog } from '@angular/material/dialog';
@@ -20,8 +20,6 @@ export class AdminComponent implements OnInit, OnDestroy {
   adminEmail: string = '';
   adminPassword: string = '';
   panelOpenState = false;
-  uEmail: string = '';
-  uPassword: string = '';
   
   //input fields create user
   email: string = '';
@@ -29,7 +27,6 @@ export class AdminComponent implements OnInit, OnDestroy {
   newUserType: string = '';
   customer: string = '';
   shopkeeper: string = '';
-  admin: string='';
 
   constructor(public ui: UiService, public dialog: MatDialog) {
     this.adminSub = ui.whenAppUsersUpdates()
@@ -71,12 +68,18 @@ export class AdminComponent implements OnInit, OnDestroy {
     });
     
   }
-  onAdminClick(email:string, password:string): void{
+  onAdminEdit(admin:AppUser): void{
     if (this.adminEmail === '' || this.adminPassword === '') {
       this.ui.openSnackBar('Can\'t have empty fields', 'Close');
       return;
     }
-    console.log('admin email and password: ', this.adminEmail, this.adminPassword)
+    const updateAdmin: AppUser = {
+      ...admin,
+      email: this.adminEmail,
+      password: this.adminPassword,
+    }
+    this.ui.editCustomer(admin, this.adminEmail, this.adminPassword)
+
   }
 
 
