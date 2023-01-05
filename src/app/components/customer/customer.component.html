@@ -18,8 +18,7 @@
 
 <mat-card class="cart-card" >
     <mat-card-title>Order History</mat-card-title>
-    <mat-card-content >       
-        <!-- <span>{{cart.id}}</span> -->
+    <mat-card-content >    
         <mat-card-subtitle *ngFor="let cart of ui.currentUser.carts" (click)="onClick(cart.id)"
         >{{cart.purchaseDate | date}}</mat-card-subtitle>
     </mat-card-content>
@@ -27,7 +26,6 @@
 </div>
 
 <div *ngIf="orderClicked">
-    <!-- products is productsInCart -->
     <div class="table-container">        
         <table mat-table [dataSource]="this.dataSource">
             <ng-container matColumnDef="Product Name">

@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material/table';
 import { UiService } from 'src/app/services/ui.service';
 import { ProductInCart } from 'src/data/ProductsInCart';
-import { AppUser } from 'src/data/User';
 
 @Component({
   selector: 'app-customer',
@@ -21,9 +19,7 @@ export class CustomerComponent implements OnInit {
     this.ui.getCartById(id);    
     this.orderClicked = true;
     this.dataSource = this.ui.getProductsInCustomerCart();
-  }
-  
-  
+  }  
 
   public customerEditForm = new FormGroup ({
     email: new FormControl(),
