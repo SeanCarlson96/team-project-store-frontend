@@ -17,7 +17,7 @@ export class EditProductComponent implements OnInit {
   editProductProductName: string = ''
   editProductPrice: number = 0
   editProductSaleId: number | undefined
-  editProductCategories: CategoryDTO[] = []
+  editProductCategories: number[] = []
   editProductDescription: string = ''
   editProductDiscontinued: boolean = false
   editProductImage: string = ''
@@ -25,6 +25,12 @@ export class EditProductComponent implements OnInit {
   editProductQuantity: number = 0
   editProductMinAdPrice: number = 0
   private selectedProductSubscription: Subscription
+  editProductCategoryDTOArray: CategoryDTO[] = []
+  catToAdd = {} as CategoryDTO
+  editProductCategoryDTOProductDTOArray: ProductDTO[] = []
+  prodToAdd = {} as ProductDTO
+  tempSaleId: number = -1
+  tempSaleId2: number = -1
 
   constructor(public ui: UiService) { 
     this.editProductId = this.ui.productIdToEdit
@@ -51,12 +57,42 @@ export class EditProductComponent implements OnInit {
   }
 
   updateProduct(): void {
+    for(let catId of this.editProductCategories){
+      for(let cat of this.ui.categories){
+        if(catId === cat.id){
+          for(let prod of cat.products){
+            if(prod.sale?.id){ this.tempSaleId = prod.sale?.id }
+            this.prodToAdd = {
+              id: prod.id,
+              productName: prod.productName,
+              price: prod.price,
+              saleId: this.tempSaleId,
+              categories: [],
+              description: prod.description,
+              discontinued: prod.discontinued,
+              image: prod.image,
+              availableDate: prod.availableDate,
+              quantity: prod.quantity,
+              minAdPrice: prod.minAdPrice
+            }
+            this.editProductCategoryDTOProductDTOArray.push(this.prodToAdd)
+          }
+          this.catToAdd = {
+            id: cat.id,
+            categoryName: cat.categoryName,
+            products: this.editProductCategoryDTOProductDTOArray
+          }
+          this.editProductCategoryDTOArray.push(this.catToAdd)
+        }
+      }
+    }
+    if(this.editProductSaleId){ this.tempSaleId2 = this.editProductSaleId }
     this.updatedProduct = {
       id: this.editProductId,
       productName: this.editProductProductName,
       price: this.editProductPrice,
-      saleId: 1, //this.editProductSale,
-      categories: this.editProductCategories,
+      saleId: this.tempSaleId2,
+      categories: this.editProductCategoryDTOArray,
       description: this.editProductDescription,
       discontinued: this.editProductDiscontinued,
       image: this.editProductImage,
