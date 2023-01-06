@@ -1,50 +1,170 @@
 <div class="heading">
     <h5>Available Coupons</h5>
 </div>
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<!-- Add btn-->
+<div class="add-btn" *ngIf="editCategoryId < 0">
+    <button mat-flat-button color="accent" *ngIf="newCoupon===false" (click)="newCoupon = true; add=true" >Add New</button>
+    <button mat-flat-button color="accent" *ngIf="newCoupon===true"
+    (click)="newCoupon = false; edit = false; add=false; ui.getCategories();" >Coupon Table</button>
+  </div>
 
-    <!-- delete Column -->
-    <ng-container matColumnDef="delete">
-      <th mat-header-cell *matHeaderCellDef> Delete </th>
-      <td mat-cell *matCellDef="let element"> <mat-icon color="accent" (click)="onDeleteCoupon(element.id)">delete_forever</mat-icon></td>
-    </ng-container>
-  
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.couponName}} </td>
-    </ng-container>
-  
-    <!-- Start Column -->
-    <ng-container matColumnDef="start">
-      <th mat-header-cell *matHeaderCellDef> Start </th>
-      <td mat-cell *matCellDef="let element"> {{element.startDate | date }} </td>
-    </ng-container>
-  
-    <!-- Stop Column -->
-    <ng-container matColumnDef="stop">
-      <th mat-header-cell *matHeaderCellDef> Stop </th>
-      <td mat-cell *matCellDef="let element"> {{element.stopDate | date}} </td>
-    </ng-container>
+<div class="add-btn" *ngIf="editCategoryId > -1">
+    <button mat-flat-button color="accent" *ngIf="newCoupon===false"
+    (click)="newCoupon = false; edit=false " >Categories Table</button>
+</div>
 
-    <!-- Percentage Column -->
-    <ng-container matColumnDef="percentage">
-        <th mat-header-cell *matHeaderCellDef> Percentage </th>
-        <td mat-cell *matCellDef="let element"> {{element.percentage | number}} </td>
-      </ng-container>
+<!-- Coupon Table Begins -->
+<div class="table-container" *ngIf="edit===false && newCoupon===false">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-      <!-- Limit Column -->
-    <ng-container matColumnDef="limit">
-        <th mat-header-cell *matHeaderCellDef> Limit </th>
-        <td mat-cell *matCellDef="let element"> {{element.useLimit}} </td>
-      </ng-container>
+        <!-- delete Column -->
+        <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef> Delete </th>
+        <td mat-cell *matCellDef="let element"> <mat-icon color="accent" (click)="onDeleteCoupon(element.id)">delete_forever</mat-icon></td>
+        </ng-container>
+    
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.couponName}} </td>
+        </ng-container>
+    
+        <!-- Start Column -->
+        <ng-container matColumnDef="start">
+        <th mat-header-cell *matHeaderCellDef> Start </th>
+        <td mat-cell *matCellDef="let element"> {{element.startDate | date }} </td>
+        </ng-container>
+    
+        <!-- Stop Column -->
+        <ng-container matColumnDef="stop">
+        <th mat-header-cell *matHeaderCellDef> Stop </th>
+        <td mat-cell *matCellDef="let element"> {{element.stopDate | date}} </td>
+        </ng-container>
 
-      <!-- Edit Column -->
-    <ng-container matColumnDef="edit">
-        <th mat-header-cell *matHeaderCellDef> Edit </th>
-        <td mat-cell *matCellDef="let element"><mat-icon>edit</mat-icon> </td>
-      </ng-container>
+        <!-- Percentage Column -->
+        <ng-container matColumnDef="percentage">
+            <th mat-header-cell *matHeaderCellDef> Percentage </th>
+            <td mat-cell *matCellDef="let element"> {{element.percentage | percent}} </td>
+        </ng-container>
+
+        <!-- Limit Column -->
+        <ng-container matColumnDef="limit">
+            <th mat-header-cell *matHeaderCellDef> Limit </th>
+            <td mat-cell *matCellDef="let element"> {{element.useLimit}} </td>
+        </ng-container>
+
+        <!-- Edit Column -->
+        <ng-container matColumnDef="edit">
+            <th mat-header-cell *matHeaderCellDef> Edit </th>
+            <td mat-cell *matCellDef="let element"><mat-icon (click)="edit=true; getCoupon(element)">edit</mat-icon> </td>
+        </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>
+
+  <!-- Add Container -->
+  <div class="table-container" *ngIf="add===true">
+        <h3 style="margin-left: 5vw;">Add Coupon</h3><br/>
+
+        <div class="container">
+            <!-- Add -->
+            <mat-form-field appearance="fill">
+                <mat-label>Coupon Name</mat-label>
+                <input name="newCouponName" matInput
+                [(ngModel)]="addCouponName" required />
+            </mat-form-field>
+            
+        </div>
+        <div class="container">
+            <!-- Start Date -->
+            <mat-form-field appearance="fill">
+                <mat-label>Start Date</mat-label>
+                <input name="newCouponStartDate" matInput type="date"
+                [(ngModel)]="startDate" required />
+            </mat-form-field>
+
+        </div>
+        <div class="container">
+            <!-- Stop Date -->
+            <mat-form-field appearance="fill">
+                <mat-label>Stop Date</mat-label>
+                <input name="newCouponStopDate" matInput type="date"
+                [(ngModel)]="stopDate" required />
+            </mat-form-field>
+        </div>
+        <div class="container">
+            <!-- Use Limit -->
+            <mat-form-field appearance="fill">
+                <mat-label>Use Limit</mat-label>
+                <input name="newCouponNameLimit" matInput type="number"
+                [(ngModel)]="useLimit" required />
+            </mat-form-field>
+        </div>
+        <div class="container">
+            <!-- Percentage -->
+            <mat-form-field appearance="fill">
+                <mat-label>Percentage</mat-label>
+                <input name="newCouponPercentage" matInput
+                [(ngModel)]="percentage" required />
+            </mat-form-field>
+        </div>
+        <button mat-icon-button type="submit" color="accent" (click)="addCoupon()">
+            <mat-icon>add_box</mat-icon>
+                Add Coupon
+        </button>
+    </div>
+
+<!-- Edit -->
+<div class="table-container" *ngIf="edit===true">
+    <h3 style="margin-left: 5vw;">EDIT Coupon</h3><br/>
+
+        <div class="container">
+            <!-- EDIT -->
+            <mat-form-field appearance="fill">
+                <mat-label>Coupon Name</mat-label>
+                <input name="editCouponName" matInput
+                [(ngModel)]="editCouponName" required />
+            </mat-form-field>
+            
+        </div>
+        <div class="container">
+            <!-- Start Date -->
+            <mat-form-field appearance="fill">
+                <mat-label>Start Date</mat-label>
+                <input name="editCouponStartDate" matInput type="date"
+                [(ngModel)]="editStartDate" required />
+            </mat-form-field>
+
+        </div>
+        <div class="container">
+            <!-- Stop Date -->
+            <mat-form-field appearance="fill">
+                <mat-label>Stop Date</mat-label>
+                <input name="editCouponStopDate" matInput type="date"
+                [(ngModel)]="editStopDate" required />
+            </mat-form-field>
+        </div>
+        <div class="container">
+            <!-- Use Limit -->
+            <mat-form-field appearance="fill">
+                <mat-label>Use Limit</mat-label>
+                <input name="editCouponNameLimit" matInput type="number"
+                [(ngModel)]="editUseLimit" required />
+            </mat-form-field>
+        </div>
+        <div class="container">
+            <!-- Percentage -->
+            <mat-form-field appearance="fill">
+                <mat-label>Percentage</mat-label>
+                <input name="editCouponPercentage" matInput
+                [(ngModel)]="editPercentage" required />
+            </mat-form-field>
+        </div>
+        <button mat-icon-button type="submit" color="accent" (click)="updateCoupon()">
+            <mat-icon>add_box</mat-icon>
+                EDIT Coupon
+        </button>
+ </div>
   
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
