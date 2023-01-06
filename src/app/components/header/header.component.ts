@@ -10,7 +10,6 @@ import { UiService } from 'src/app/services/ui.service';
 export class HeaderComponent implements OnInit {
   public ui: UiService
   public PageName = PageName
-  public cartBadge: number = 0
 
   constructor(ui: UiService){
     this.ui = ui
@@ -18,9 +17,6 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  
-  public updateCartBadge(): void {
-    
-  }
+
 
 }

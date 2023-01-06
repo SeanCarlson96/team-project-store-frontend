@@ -14,6 +14,7 @@ import { CartDTO } from 'src/DTOs/CartDTO';
 import { ProductInCartDTO } from 'src/DTOs/ProductInCartDTO';
 import { ProductInCart } from 'src/data/ProductsInCart';
 import { Cart } from 'src/data/Cart';
+import { SaleDTO } from 'src/DTOs/SaleDTO';
 import { CouponDTO } from 'src/DTOs/CouponDTO';
 
 
@@ -38,7 +39,7 @@ export class UiService {
   public selectedProduct = {} as Product
   public products: Product[] = []
   public productIdToEdit: number = 0
-
+  public saleIdToEdit: number = 0
   public categoryIdToEdit: number = 0
   public currentCart = {} as CartDTO
 
@@ -157,7 +158,6 @@ export class UiService {
         next: product => {
         this.selectedProduct = product
         this.selectedProduct$.next(this.selectedProduct)
-        console.log(this.selectedProduct)
       },
       error: () => this.openSnackBar('Problem getting product', 'Close')
     })
@@ -344,6 +344,15 @@ export class UiService {
         error: () => this.openSnackBar('Something went wrong when adding a new Category', 'Close'),
     })
   }
+  addSale(newSaleDTO: SaleDTO) {
+    this.http
+      .post<SaleDTO>('http://localhost:8080/sales', newSaleDTO)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {this.loadSales(); this.openSnackBar('Sale Added', 'Close')},
+        error: () => this.openSnackBar('Something went wrong when adding a new Sale', 'Close'),
+    })
+  } 
   public addCoupon(newCoupon: CouponDTO): void {  
     this.http
       .post<CouponDTO>(this.couponUrl, newCoupon)
@@ -413,6 +422,18 @@ export class UiService {
         error: () => this.openSnackBar('Something went wrong during category edit', 'Close'),
       })
   }
+  public editSale(updatedSale: SaleDTO): void {
+    this.http
+      .put<SaleDTO>(`http://localhost:8080/sales/${updatedSale.id}`, updatedSale)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.loadSales()
+          this.openSnackBar('Sale Updated Successfully', 'Close')
+        },
+        error: () => this.openSnackBar('Something went wrong during Sale edit', 'Close'),
+      })
+  }
   
   public updateUser(id: number, user:AppUser): void {
     this.http.put<AppUser>(`http://localhost:8080/appusers/${id}`, user)
@@ -469,7 +490,18 @@ export class UiService {
         this.loadCategories()
         this.openSnackBar('Category Deleted', 'Close')
       },
-      error: () => this.onError('Something went wrong when Deleting a user!')
+      error: () => this.onError('Something went wrong when Deleting a category!')
+    })
+  }
+  public deleteSale(id: number): void {
+    this.http.delete<Sale>(`http://localhost:8080/sales/${id}`)
+    .pipe(take(1))
+    .subscribe({
+      next: ()=> {
+        this.loadSales()
+        this.openSnackBar('Sale Deleted', 'Close')
+      },
+      error: () => this.onError('Something went wrong when Deleting a Sale!')
     })
   }
 
