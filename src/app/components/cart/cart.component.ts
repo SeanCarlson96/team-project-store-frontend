@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { UiService } from 'src/app/services/ui.service';
+import { Cart } from 'src/data/Cart';
 import { Product } from 'src/data/Product';
-import { CartDTO } from 'src/DTOs/CartDTO';
+import { ProductInCart } from 'src/data/ProductsInCart';
 
 @Component({
   selector: 'app-cart',
@@ -9,18 +11,19 @@ import { CartDTO } from 'src/DTOs/CartDTO';
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
-  displayedColumns: string[] = ['delete', 'productName', 'quantity', 'pricePerItem', 'totalPrice']
-  public dataSource: Product[] = []
+  public displayedColumns: string[] = ['delete', 'productName', 'quantity', 'pricePerItem', 'totalPrice']
+  public dataSource: ProductInCart[] = []
+  private productsInCartSubscription: Subscription
 
-  constructor(public ui: UiService) { }
-
-  public showMe(): void {
-    console.log(this.ui.selectedProduct.productName)
-    console.log(this.ui.currentCart.products[0].quantity)
-    console.log(this.ui.selectedProduct.price)
-    console.log(this.ui.selectedProduct.price*this.ui.currentCart.products[0].quantity)
+  constructor(public ui: UiService) {
+    this.productsInCartSubscription = ui.loadShowCurrentProductsInCart().subscribe(productsInCart => {
+      this.dataSource = productsInCart
+    })
   }
+
+  
   ngOnInit(): void {
+    // this.dataSource = this.ui.loadShowCurrentProductsInCart();
   }
 
 }

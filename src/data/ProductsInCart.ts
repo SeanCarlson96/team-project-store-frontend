@@ -1,7 +1,7 @@
 import { Product } from "./Product"
 
 export interface ProductInCart {
-    id: number
+    id: number | null
     quantity: number
     product: Product
 }
