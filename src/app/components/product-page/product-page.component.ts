@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { UiService } from 'src/app/services/ui.service';
 import { PageName } from 'src/app/enums/PageEnum';
+import { Product } from 'src/data/Product';
 
 
 @Component({
@@ -11,6 +12,7 @@ import { PageName } from 'src/app/enums/PageEnum';
 export class ProductPageComponent implements OnInit {
   public quantityInCart = 0
   public PageName = PageName
+
 
 
   constructor(public ui: UiService) { }
@@ -25,6 +27,8 @@ export class ProductPageComponent implements OnInit {
       this.ui.selectedProduct.quantity += 1
     }
   }
+
+  
 
   ngOnInit(): void {
   }

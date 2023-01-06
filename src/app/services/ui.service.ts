@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ɵgetUnknownElementStrictMode } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppUser } from 'src/data/User';
-import { catchError, map, Observable, of, pipe, Subject, take, tap, throwError} from 'rxjs';
+import { catchError, interval, map, Observable, of, pipe, Subject, take, tap, throwError} from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PageName } from '../enums/PageEnum';
 import { Product } from 'src/data/Product';
@@ -36,12 +36,14 @@ export class UiService {
   selectedProduct$: Subject<Product> = new Subject();
   coupons$: Subject<Coupon[]> = new Subject();
   private productsSubject: Subject<Product[]> = new Subject()
+  private productsInCartSubject: Subject<ProductInCart[]> = new Subject()
   public selectedProduct = {} as Product
   public products: Product[] = []
   public productIdToEdit: number = 0
   public saleIdToEdit: number = 0
   public categoryIdToEdit: number = 0
-  public currentCart = {} as CartDTO
+  public currentCart = {} as Cart
+  public productInGuestCart: ProductInCart[] = []
 
   // user order history
   private showProductsInUserCart: ProductInCart[] = []
@@ -516,29 +518,86 @@ export class UiService {
       error: () => this.onError('Something went wrong when Deleting a Coupon!')
     })
   }
+
+  currentCartId: number = 0
+  public getCurrentCartId(): void {
+    
+    this.http.get<Cart[]>('http://localhost:8080/carts')
+      .pipe(take(1))
+      .subscribe({
+        next: carts => {
+          this.currentCartId = carts[carts.length-1].id
+          this.getCurrentCart(this.currentCartId)
+          console.log(carts[carts.length-1].id)
+          console.log(carts)
+        }
+      })
+  }
+
+  public loadShowCurrentProductsInCart(): Observable<ProductInCart[]>{
+    return this.productsInCartSubject.asObservable()
+  }
+
+  public showCurrentProductsInCart: ProductInCart[] = []
+  public getCurrentCart(id: number): void {
+    console.log(id)
+    this.http.get<Cart>(`http://localhost:8080/carts/${id}`)
+      .pipe(take(1))
+      .subscribe({
+        next: cart => {
+          this.showCurrentProductsInCart = cart.products
+          this.productsInCartSubject.next(this.showCurrentProductsInCart)
+          console.log(this.showCurrentProductsInCart)
+          // console.log("hello" + this.currentCart.id)
+          // console.log("hello" + this.currentCart.products[0].product.productName)
+          // console.log("hello" + this.currentCart.products[0].product.price)
+          // console.log("hello" + this.currentCart.products[0].quantity)
+          // console.log("hello" + this.currentCart.products[0].quantity * this.currentCart.products[0].product.price)
+          
+        },
+        error: () => this.openSnackBar('Problem getting cart', 'Close')
+      })
+  }
+
+  
+  
+  public thisUserId: number = 0
   public createCart(quantity: number): void {
     const productInCart: ProductInCartDTO = {
       id: null,
       productId: this.selectedProduct.id,
       quantity: quantity
     }
+     
     const newCart: CartDTO = {
       id: null,
-      purchaseDate: null,
-      products: [productInCart]
+      purchaseDate: new Date(),
+      products: [productInCart],
+      userId: this.currentUser.id
     }
   
-    
     
     this.http.post<CartDTO>('http://localhost:8080/carts', newCart)
       .pipe(take(1))
       .subscribe({
-        next: cart => {this.currentCart = cart
+        next: () => {this.getCurrentCartId()
         console.log(newCart)
         console.log(productInCart)
-        console.log("hello" + this.currentCart)
       },
       error: () => this.openSnackBar('Error creating cart', 'Close')
       })
+  }
+
+  public addToCart(quantity: number):void {
+    if (this.currentUser.userType !== undefined){
+      console.log('there is a user')
+      this.createCart(quantity);
+    }
+    this.productInGuestCart = [{
+      id: null,
+      quantity: quantity,
+      product: this.selectedProduct
+    }]
+    
   }
 }
