@@ -17,13 +17,18 @@ export class AddNewProductComponent implements OnInit {
   newProductProductName: string = ''
   newProductPrice: number = 0
   newProductSaleId: number = 0
-  newProductCategories: CategoryDTO[] = []
+  newProductCategories: number[] = []
   newProductDescription: string = ''
   newProductDiscontinued: boolean = false
   newProductImage: string = ''
   newProductAvailableDate: Date = new Date
   newProductQuantity: number = 0
   newProductMinAdPrice: number = 0
+  newProductCategoryDTOArray: CategoryDTO[] = []
+  catToAdd = {} as CategoryDTO
+  newProductCategoryDTOProductDTOArray: ProductDTO[] = []
+  prodToAdd = {} as ProductDTO
+  tempSaleId: number = 0
 
   constructor(public ui: UiService) { }
 
@@ -31,13 +36,45 @@ export class AddNewProductComponent implements OnInit {
   }
 
   createProduct(): void {
-    console.log(this.newProductCategories)
+    //loop through this.newProductCategories and create CategoryDTO for each.
+    for(let catId of this.newProductCategories){
+      for(let cat of this.ui.categories){
+        if(catId === cat.id){
+          //loop through products and create ProductDTO for each
+          for(let prod of cat.products){
+            if(prod.sale?.id){ this.tempSaleId = prod.sale?.id }
+            this.prodToAdd = {
+              id: prod.id,
+              productName: prod.productName,
+              price: prod.price,
+              saleId: this.tempSaleId,
+              categories: [],
+              description: prod.description,
+              discontinued: prod.discontinued,
+              image: prod.image,
+              availableDate: prod.availableDate,
+              quantity: prod.quantity,
+              minAdPrice: prod.minAdPrice
+            }
+            this.newProductCategoryDTOProductDTOArray.push(this.prodToAdd)
+          }
+          this.catToAdd = {
+            id: cat.id,
+            categoryName: cat.categoryName,
+            products: this.newProductCategoryDTOProductDTOArray
+          }
+          //Push that categoryDTO into new array
+          this.newProductCategoryDTOArray.push(this.catToAdd)
+        }
+      }
+    }
+    
     this.newProduct = {
       id: null,
       productName: this.newProductProductName,
       price: this.newProductPrice,
       saleId: this.newProductSaleId,
-      categories: this.newProductCategories,
+      categories: this.newProductCategoryDTOArray,
       description: this.newProductDescription,
       discontinued: this.newProductDiscontinued,
       image: this.newProductImage,

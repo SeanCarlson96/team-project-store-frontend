@@ -15,18 +15,22 @@ export class ShopkeeperSalesComponent implements OnInit, OnDestroy {
   public newSale: boolean = false
   //public editSale: number = -1
   public editSaleId: number = -1
-  public displayedColumns: string[] = ['Delete', 'Edit', 'saleName', 'startDate', 'stopDate', 'products', 'discountPercentage'];
+  public displayedColumns: string[] = ['Delete', 'Edit', 'saleName', 'startDate', 'stopDate', 'discountPercentage']; //'products',
   public dataSource: Sale[] = []
   private salesSubscription: Subscription
   public edit: boolean = false
   public newSaleSaleName: string = ''
   public newSaleStartDate: Date = new Date
   public newSaleStopDate: Date = new Date
-  public newSaleProducts: ProductDTO[] = []
+  public newSaleProducts: number[] = []
   public newSaleDiscountPercentage: number = 0
   public newSaleDTO = {} as SaleDTO
   public updatedSale = {} as SaleDTO
   public salesProducts = {} as ProductDTO
+  public newSaleProductDTOArray: ProductDTO[] = []
+  public productDTOToAdd = {} as ProductDTO
+  tempSaleId: number = 0
+  tempSaleId2: number = 0
 
   constructor(ui:UiService){
     this.ui = ui
@@ -41,14 +45,36 @@ export class ShopkeeperSalesComponent implements OnInit, OnDestroy {
     this.salesSubscription.unsubscribe()
   }
   addNewSale() {
+    for(let productId of this.newSaleProducts){
+      for(let product of this.ui.products){
+        if(productId === product.id){
+          if(product.sale?.id){ this.tempSaleId = product.sale?.id }
+          this.productDTOToAdd = {
+            id: product.id,
+            productName: product.productName,
+            price: product.price,
+            saleId: this.tempSaleId,
+            categories: [],
+            description: product.description,
+            discontinued: product.discontinued,
+            image: product.image,
+            availableDate: product.availableDate,
+            quantity: product.quantity,
+            minAdPrice: product.minAdPrice
+          }
+          this.newSaleProductDTOArray.push(this.productDTOToAdd)
+        }
+      }
+    }
     this.newSaleDTO = {
       id: null,
       saleName: this.newSaleSaleName,
       startDate: this.newSaleStartDate,
       stopDate: this.newSaleStopDate,
-      products: this.newSaleProducts, //of type ProductDTO
+      products: this.newSaleProductDTOArray, //of type ProductDTO[]
       discountPercentage: this.newSaleDiscountPercentage
     }
+    console.log(this.newSaleDTO)
     this.ui.addSale(this.newSaleDTO)
     this.newSale = false
   }
@@ -63,12 +89,33 @@ export class ShopkeeperSalesComponent implements OnInit, OnDestroy {
     }
   }
   updateSale(): void {
+    for(let productId of this.newSaleProducts){
+      for(let product of this.ui.products){
+        if(productId === product.id){
+          if(product.sale?.id){ this.tempSaleId2 = product.sale?.id }
+          this.productDTOToAdd = {
+            id: product.id,
+            productName: product.productName,
+            price: product.price,
+            saleId: this.tempSaleId2,
+            categories: [],
+            description: product.description,
+            discontinued: product.discontinued,
+            image: product.image,
+            availableDate: product.availableDate,
+            quantity: product.quantity,
+            minAdPrice: product.minAdPrice
+          }
+          this.newSaleProductDTOArray.push(this.productDTOToAdd)
+        }
+      }
+    }
     this.updatedSale = {
       id: this.editSaleId,
       saleName: this.newSaleSaleName,
       startDate: this.newSaleStartDate,
       stopDate: this.newSaleStopDate,
-      products: this.newSaleProducts, //of type ProductDTO
+      products: this.newSaleProductDTOArray, //of type ProductDTO
       discountPercentage: this.newSaleDiscountPercentage
     }
     this.ui.editSale(this.updatedSale)
