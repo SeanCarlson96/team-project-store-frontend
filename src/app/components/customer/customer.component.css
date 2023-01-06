@@ -29,3 +29,9 @@
   table {
     width: 90%;
   }
+
+  .cart-total-container {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+  }

@@ -14,7 +14,7 @@ export class ShopkeeperCategoriesComponent implements OnInit, OnDestroy {
   ui: UiService
   public newCategory: boolean = false
   //public editCategory: number = -1
-  public editCategoryId: number = -1
+  public editCategoryId: number = 1
   public displayedColumns: string[] = ['Delete', 'Edit', 'categoryName'];
   public dataSource: Category[] = []
   private categoriesSubscription: Subscription

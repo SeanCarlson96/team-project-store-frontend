@@ -15,6 +15,7 @@ import { ProductInCartDTO } from 'src/DTOs/ProductInCartDTO';
 import { ProductInCart } from 'src/data/ProductsInCart';
 import { Cart } from 'src/data/Cart';
 import { SaleDTO } from 'src/DTOs/SaleDTO';
+import { CouponDTO } from 'src/DTOs/CouponDTO';
 
 
 @Injectable({
@@ -344,7 +345,7 @@ export class UiService {
         next: () => {this.loadCategories(); this.openSnackBar('Category Added', 'Close')},
         error: () => this.openSnackBar('Something went wrong when adding a new Category', 'Close'),
     })
-  }  
+  }
   addSale(newSaleDTO: SaleDTO) {
     this.http
       .post<SaleDTO>('http://localhost:8080/sales', newSaleDTO)
@@ -354,6 +355,15 @@ export class UiService {
         error: () => this.openSnackBar('Something went wrong when adding a new Sale', 'Close'),
     })
   } 
+  public addCoupon(newCoupon: CouponDTO): void {  
+    this.http
+      .post<CouponDTO>(this.couponUrl, newCoupon)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {this.loadCoupons(); this.openSnackBar('Coupon Added', 'Close')},
+        error: () => this.openSnackBar('Something went wrong when adding a new Coupon', 'Close'),
+    })
+  }
 
   public whenCategoryUpdates(): Observable<Category[]>{
     return this.categories$.asObservable();
@@ -439,6 +449,21 @@ export class UiService {
     })
   }
 
+  public editCoupon(updatedCoupon: CouponDTO): void {
+    this.http
+      .put<CouponDTO>(`${this.couponUrl}/${updatedCoupon.id}`, updatedCoupon)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.getCoupons()
+          this.openSnackBar('Coupon Updated Successfully', 'Close')
+        },
+        error: (err) => {
+          console.log(err);
+          this.openSnackBar('Something went wrong during coupon edit', 'Close')}     
+      })
+  }
+  
   // DELETE requests
   public deleteAppUser(id: number): void {
     this.http.delete<AppUser>(`${this.appUsersUrl}/${id}`)
@@ -550,6 +575,8 @@ export class UiService {
       products: [productInCart],
       userId: this.currentUser.id
     }
+  
+    
     this.http.post<CartDTO>('http://localhost:8080/carts', newCart)
       .pipe(take(1))
       .subscribe({
